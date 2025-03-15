@@ -2,7 +2,7 @@ const Landing = () => {
   return (
     <>
       <div>
-        <h1>Who's that Pokémon?</h1>
+        <h1 className="text-center">Who's that Pokémon?</h1>
       </div>
       <div id="select-gens">
         <div>Gens 1-5</div>
@@ -18,7 +18,9 @@ const Landing = () => {
         <input type="text" />
       </div>
       <div>Type () () </div>
-      <div>This Pokémon weighs BOLD(number kg) </div>
+      <div>
+        This Pokémon weighs <p className="font-bold">number kg</p>
+      </div>
       <div>
         <p>Not Helpful? MASTER BALL</p>
         <button>Hint: see what's inside</button>
