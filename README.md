@@ -1,7 +1,11 @@
-## Study Lounge
+## Who's That Pokémon?
 
-A website designed to enhance study productivity through video rooms (complete with screen sharing and real-time chat), shared note-taking tools inspired by Obsidian and Google Docs, and SRS flashcards. Features customisable themes, interactive motivators (e.g. Pomodoro timers, virtual pets, XP gamification), and integration with APIs such as Spotify.
+An interactive website inspired by the classic "Who's That Pokémon" television segments. Players guess the Pokémon by listening to its cry, with each incorrect attempt revealing hints such as its type, weight, debut game, abilities, and eventually its sprite. Includes customisable settings for a personalised experience and leverages PokéAPI for the most accurate, up-to-date Pokémon data.
 
 NOTE: This is solely a personal project for self-learning purposes.
 
 #### Technologies
+
+#### Screenshots
+
+#### Attributions
