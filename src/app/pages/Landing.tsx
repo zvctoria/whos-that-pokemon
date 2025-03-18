@@ -2,13 +2,16 @@ import { SelectPanel } from "../../components/SelectPanel";
 import { HintPanel } from "../../components/HintPanel";
 import { SettingsButton } from "../../components/SettingsButton";
 import { PokeBall } from "../../components/PokeBall";
+import logo from "../../assets/logo.png";
 
 const Landing = () => {
   return (
     <>
-      <div>
-        <h1 className="text-center">Who's that Pokémon?</h1>
-      </div>
+      <img
+        className="h-auto w-1/2 mx-auto"
+        src={logo}
+        alt="Who's That Pokémon header"
+      />
       <SelectPanel></SelectPanel>
       <h2>Please click at least one generation! (Toggle)</h2>
       <button className="bg-red-600">Replay Cry</button>
