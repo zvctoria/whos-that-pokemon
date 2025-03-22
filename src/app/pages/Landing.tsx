@@ -4,14 +4,10 @@ import { SettingsButton } from "../../components/SettingsButton";
 import { PokeBall } from "../../components/PokeBall";
 import { ReplayButton } from "../../components/ReplayButton/ReplayButton.jsx";
 import logo from "../../assets/logo.png";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { z } from "zod";
-
-const NamedAPIResource = z.object({
-  name: z.string(),
-  url: z.string().url(),
-});
+import { Pokemon } from "../../lib/schema/index";
 
 async function fetchAndValidate<T>(
   url: string,
@@ -31,56 +27,18 @@ async function fetchAndValidate<T>(
 }
 
 async function fetchPokemon(id: number) {
-  // note: while ability URL also provides the name, keep 'name' field to avoid
-  // unnecessary API calls if further hints are not needed
-  // is_hidden: Whether or not this is a hidden ability.
-  // slot: The slot this ability occupies in this Pokémon species.
-  const PokemonAbility = z.object({
-    is_hidden: z.boolean(),
-    slot: z.number(),
-    ability: NamedAPIResource,
-  });
-
-  // slot: The order the Pokémon's types are listed in.
-  const PokemonType = z.object({
-    slot: z.number(),
-    type: NamedAPIResource,
-  });
-
-  // also note: these stats are based upon the latest game/data
-  // e.g. "type" would be the current type, and does not consider cases
-  // such as the retconned fairy type.
-  const schema = z.object({
-    id: z.number(),
-    name: z.string(),
-    weight: z.number(),
-    abilities: z.array(PokemonAbility),
-    sprites: z.object({ front_default: z.string().url() }),
-    cries: z.object({ latest: z.string().url() }),
-    types: z.array(PokemonType),
-  });
-
-  return fetchAndValidate(`https://pokeapi.co/api/v2/pokemon/${id}`, schema);
+  return fetchAndValidate(`https://pokeapi.co/api/v2/pokemon/${id}`, Pokemon);
 }
 
-async function fetchGeneration(id: number) {
-  // potentially cool fields to incorporate later: is_baby, is_legendary
-  // is_mythical, is_default, for extra guessing categories
-  const schema = z.object({
-    generation: NamedAPIResource,
-    varieties: z.array(
-      z.object({
-        is_default: z.boolean(),
-        pokemon: NamedAPIResource,
-      })
-    ),
-  });
+// async function fetchGeneration(id: number) {
+//   // potentially cool fields to incorporate later: is_baby, is_legendary
+//   // is_mythical, is_default, for extra guessing categories
 
-  return fetchAndValidate(
-    `https://pokeapi.co/api/v2/pokemon-species/${id}`,
-    schema
-  );
-}
+//   return fetchAndValidate(
+//     `https://pokeapi.co/api/v2/pokemon-species/${id}`,
+//     PokemonSpecies
+//   );
+// }
 
 const Landing = () => {
   // Assumes there are 1025 unique Pokémon. True as of now.

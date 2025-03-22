@@ -1,7 +1,17 @@
 import "./ReplayButton.css";
 import { useState } from "react";
+import { z } from "zod";
+import { Pokemon } from "../../lib/schema/index";
 
-export const ReplayButton = ({ data, isLoading, error }) => {
+export const ReplayButton = ({
+  data,
+  isLoading,
+  error,
+}: {
+  data: z.infer<typeof Pokemon> | undefined;
+  isLoading: boolean;
+  error: Error | null;
+}) => {
   const [isPlaying, setPlaying] = useState(false);
 
   const playSound = () => {
