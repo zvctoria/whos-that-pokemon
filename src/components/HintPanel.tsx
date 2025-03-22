@@ -1,4 +1,11 @@
-export const HintPanel = () => {
+import { z } from "zod";
+import { Pokemon } from "../lib/schema/index";
+
+export const HintPanel = ({
+  data,
+}: {
+  data: z.infer<typeof Pokemon> | undefined;
+}) => {
   return (
     <>
       <div>Type () () </div>

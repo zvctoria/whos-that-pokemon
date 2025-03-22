@@ -1,14 +1,12 @@
 import "./ReplayButton.css";
 import { useState } from "react";
-import { z } from "zod";
-import { Pokemon } from "../../lib/schema/index";
 
 export const ReplayButton = ({
-  data,
+  url,
   isLoading,
   error,
 }: {
-  data: z.infer<typeof Pokemon> | undefined;
+  url: string | undefined;
   isLoading: boolean;
   error: Error | null;
 }) => {
@@ -32,6 +30,7 @@ export const ReplayButton = ({
           id="play-button"
           className="bg-white-600 cursor-pointer flex"
           onClick={isPlaying ? pauseSound : playSound}
+          disabled={isLoading || !url}
         >
           {isPlaying ? (
             <span id="pixel-pause"></span>

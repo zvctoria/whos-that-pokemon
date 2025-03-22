@@ -53,6 +53,8 @@ const Landing = () => {
     queryFn: () => fetchPokemon(id),
   });
 
+  const cryUrl = pokemon?.cries?.latest || "";
+
   return (
     <>
       <img
@@ -64,11 +66,11 @@ const Landing = () => {
       <h2>Please click at least one generation! (Toggle)</h2>
       <ReplayButton
         isLoading={isLoading}
-        data={pokemon}
+        url={cryUrl}
         error={error}
       ></ReplayButton>
       <input type="text" className="block bg-white" />
-      <HintPanel></HintPanel>
+      <HintPanel data={pokemon}></HintPanel>
       <button>(when done) Try Again</button>
       <SettingsButton></SettingsButton>
       <PokeBall></PokeBall>
