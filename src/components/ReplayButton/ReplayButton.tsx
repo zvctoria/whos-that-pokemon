@@ -1,6 +1,5 @@
 import "./ReplayButton.css";
 import { useState } from "react";
-import { Howl, Howler } from "howler";
 
 export const ReplayButton = ({
   url,
