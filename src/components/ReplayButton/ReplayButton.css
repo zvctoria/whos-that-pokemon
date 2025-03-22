@@ -1,0 +1,84 @@
+#play-button {
+  width: 15rem;
+  height: 15rem;
+}
+
+#pixel-play {
+  width: 1rem;
+  height: 1rem;
+  box-shadow:
+  /* row 1 - should be 15 pixels across */ 5rem 0rem 0 -0.05rem #ffff,
+    6rem 0rem 0 -0.05rem #ffff, 7rem 0rem 0 -0.05rem #ffff,
+    8rem 0rem 0 -0.05rem #ffff, 9rem 0rem 0 -0.05rem #ffff,
+    /* row 2 */ 3rem 1rem 0 -0.05rem #ffff, 4rem 1rem 0 -0.05rem #ffff,
+    10rem 1rem 0 -0.05rem #ffff, 11rem 1rem 0 -0.05rem #ffff,
+    /* row 3 */ 2rem 2rem 0 -0.05rem #ffff, 12rem 2rem 0 -0.05rem #ffff,
+    /* row 4 */ 1rem 3rem 0 -0.05rem #ffff, 13rem 3rem 0 -0.05rem #ffff,
+    /* row 5 */ 1rem 4rem 0 -0.05rem #ffff, 6rem 4rem 0 -0.05rem #ffff,
+    7rem 4rem 0 -0.05rem #ffff, 13rem 4rem 0 -0.05rem #ffff,
+    /* row 6 */ 0rem 5rem 0 -0.05rem #ffff, 6rem 5rem 0 -0.05rem #ffff,
+    7rem 5rem 0 -0.05rem #ffff, 8rem 5rem 0 -0.05rem #ffff,
+    14rem 5rem 0 -0.05rem #ffff, /* row 7 */ 0rem 6rem 0 -0.05rem #ffff,
+    6rem 6rem 0 -0.05rem #ffff, 7rem 6rem 0 -0.05rem #ffff,
+    8rem 6rem 0 -0.05rem #ffff, 9rem 6rem 0 -0.05rem #ffff,
+    14rem 6rem 0 -0.05rem #ffff, /* row 8 */ 0rem 7rem 0 -0.05rem #ffff,
+    6rem 7rem 0 -0.05rem #ffff, 7rem 7rem 0 -0.05rem #ffff,
+    8rem 7rem 0 -0.05rem #ffff, 9rem 7rem 0 -0.05rem #ffff,
+    10rem 7rem 0 -0.05rem #ffff, 14rem 7rem 0 -0.05rem #ffff,
+    /* row 9 */ 0rem 8rem 0 -0.05rem #ffff, 6rem 8rem 0 -0.05rem #ffff,
+    7rem 8rem 0 -0.05rem #ffff, 8rem 8rem 0 -0.05rem #ffff,
+    9rem 8rem 0 -0.05rem #ffff, 14rem 8rem 0 -0.05rem #ffff,
+    /* row 10 */ 0rem 9rem 0 -0.05rem #ffff, 6rem 9rem 0 -0.05rem #ffff,
+    7rem 9rem 0 -0.05rem #ffff, 8rem 9rem 0 -0.05rem #ffff,
+    14rem 9rem 0 -0.05rem #ffff, /* row 11 */ 1rem 10rem 0 -0.05rem #ffff,
+    6rem 10rem 0 -0.05rem #ffff, 7rem 10rem 0 -0.05rem #ffff,
+    13rem 10rem 0 -0.05rem #ffff, /* row 12 */ 1rem 11rem 0 -0.05rem #ffff,
+    13rem 11rem 0 -0.05rem #ffff, /* row 13 */ 2rem 12rem 0 -0.05rem #ffff,
+    12rem 12rem 0 -0.05rem #ffff, /* row 14 */ 3rem 13rem 0 -0.05rem #ffff,
+    11rem 13rem 0 -0.05rem #ffff, 4rem 13rem 0 -0.05rem #ffff,
+    10rem 13rem 0 -0.05rem #ffff, /* row 15 */ 5rem 14rem 0 -0.05rem #ffff,
+    5rem 14rem 0 -0.05rem #ffff, 6rem 14rem 0 -0.05rem #ffff,
+    7rem 14rem 0 -0.05rem #ffff, 8rem 14rem 0 -0.05rem #ffff,
+    9rem 14rem 0 -0.05rem #ffff;
+}
+
+#pixel-pause {
+  width: 1rem;
+  height: 1rem;
+  box-shadow:
+    /* row 1 - should be 15 pixels across */ 5rem 0rem 0 -0.05rem #ffff,
+    6rem 0rem 0 -0.05rem #ffff, 7rem 0rem 0 -0.05rem #ffff,
+    8rem 0rem 0 -0.05rem #ffff, 9rem 0rem 0 -0.05rem #ffff,
+    /* row 2 */ 3rem 1rem 0 -0.05rem #ffff, 4rem 1rem 0 -0.05rem #ffff,
+    10rem 1rem 0 -0.05rem #ffff, 11rem 1rem 0 -0.05rem #ffff,
+    /* row 3 */ 2rem 2rem 0 -0.05rem #ffff, 12rem 2rem 0 -0.05rem #ffff,
+    /* row 4 */ 1rem 3rem 0 -0.05rem #ffff, 13rem 3rem 0 -0.05rem #ffff,
+    /* row 5 */ 1rem 4rem 0 -0.05rem #ffff, 5rem 4rem 0 -0.05rem #ffff,
+    6rem 4rem 0 -0.05rem #ffff, 8rem 4rem 0 -0.05rem #ffff,
+    9rem 4rem 0 -0.05rem #ffff, 13rem 4rem 0 -0.05rem #ffff,
+    /* row 6 */ 0rem 5rem 0 -0.05rem #ffff, 5rem 5rem 0 -0.05rem #ffff,
+    6rem 5rem 0 -0.05rem #ffff, 8rem 5rem 0 -0.05rem #ffff,
+    9rem 5rem 0 -0.05rem #ffff, 14rem 5rem 0 -0.05rem #ffff,
+    /* row 7 */ 0rem 6rem 0 -0.05rem #ffff, 5rem 6rem 0 -0.05rem #ffff,
+    6rem 6rem 0 -0.05rem #ffff, 8rem 6rem 0 -0.05rem #ffff,
+    9rem 6rem 0 -0.05rem #ffff, 14rem 6rem 0 -0.05rem #ffff,
+    /* row 8 */ 0rem 7rem 0 -0.05rem #ffff, 5rem 7rem 0 -0.05rem #ffff,
+    6rem 7rem 0 -0.05rem #ffff, 8rem 7rem 0 -0.05rem #ffff,
+    9rem 7rem 0 -0.05rem #ffff, 14rem 7rem 0 -0.05rem #ffff,
+    /* row 9 */ 0rem 8rem 0 -0.05rem #ffff, 5rem 8rem 0 -0.05rem #ffff,
+    6rem 8rem 0 -0.05rem #ffff, 8rem 8rem 0 -0.05rem #ffff,
+    9rem 8rem 0 -0.05rem #ffff, 14rem 8rem 0 -0.05rem #ffff,
+    /* row 10 */ 0rem 9rem 0 -0.05rem #ffff, 5rem 9rem 0 -0.05rem #ffff,
+    6rem 9rem 0 -0.05rem #ffff, 8rem 9rem 0 -0.05rem #ffff,
+    9rem 9rem 0 -0.05rem #ffff, 14rem 9rem 0 -0.05rem #ffff,
+    /* row 11 */ 1rem 10rem 0 -0.05rem #ffff, 5rem 10rem 0 -0.05rem #ffff,
+    6rem 10rem 0 -0.05rem #ffff, 8rem 10rem 0 -0.05rem #ffff,
+    9rem 10rem 0 -0.05rem #ffff, 13rem 10rem 0 -0.05rem #ffff,
+    /* row 12 */ 1rem 11rem 0 -0.05rem #ffff, 13rem 11rem 0 -0.05rem #ffff,
+    /* row 13 */ 2rem 12rem 0 -0.05rem #ffff, 12rem 12rem 0 -0.05rem #ffff,
+    /* row 14 */ 3rem 13rem 0 -0.05rem #ffff, 11rem 13rem 0 -0.05rem #ffff,
+    4rem 13rem 0 -0.05rem #ffff, 10rem 13rem 0 -0.05rem #ffff,
+    /* row 15 */ 5rem 14rem 0 -0.05rem #ffff, 5rem 14rem 0 -0.05rem #ffff,
+    6rem 14rem 0 -0.05rem #ffff, 7rem 14rem 0 -0.05rem #ffff,
+    8rem 14rem 0 -0.05rem #ffff, 9rem 14rem 0 -0.05rem #ffff;
+}

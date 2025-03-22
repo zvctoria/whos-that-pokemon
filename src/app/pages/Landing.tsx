@@ -2,6 +2,7 @@ import { SelectPanel } from "../../components/SelectPanel";
 import { HintPanel } from "../../components/HintPanel";
 import { SettingsButton } from "../../components/SettingsButton";
 import { PokeBall } from "../../components/PokeBall";
+import { ReplayButton } from "../../components/ReplayButton/ReplayButton.jsx";
 import logo from "../../assets/logo.png";
 
 const Landing = () => {
@@ -14,7 +15,7 @@ const Landing = () => {
       />
       <SelectPanel></SelectPanel>
       <h2>Please click at least one generation! (Toggle)</h2>
-      <button className="bg-red-600">Replay Cry</button>
+      <ReplayButton></ReplayButton>
       <input type="text" className="block bg-white" />
       <HintPanel></HintPanel>
       <button>(when done) Try Again</button>
