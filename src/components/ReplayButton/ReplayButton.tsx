@@ -1,5 +1,6 @@
 import "./ReplayButton.css";
 import { useState } from "react";
+import ReactPlayer from "react-player";
 
 export const ReplayButton = ({
   url,
@@ -35,6 +36,23 @@ export const ReplayButton = ({
           )}
         </button>
       </div>
+      {url && (
+        <ReactPlayer
+          url={url}
+          playing={isPlaying}
+          controls={false}
+          volume={0.5}
+          width={0}
+          height={0}
+          type="audio/ogg"
+          config={{
+            file: {
+              forceAudio: true,
+            },
+          }}
+          onEnded={() => setPlaying(false)}
+        />
+      )}
     </>
   );
 };
