@@ -1,5 +1,6 @@
 import "./ReplayButton.css";
 import { useState } from "react";
+import ReactHowler from "react-howler";
 
 export const ReplayButton = ({
   url,
@@ -12,12 +13,8 @@ export const ReplayButton = ({
 }) => {
   const [isPlaying, setPlaying] = useState(false);
 
-  const playSound = () => {
-    setPlaying(true);
-  };
-
-  const pauseSound = () => {
-    setPlaying(false);
+  const togglePause = () => {
+    setPlaying((isPlaying) => !isPlaying);
   };
 
   return (
@@ -29,7 +26,7 @@ export const ReplayButton = ({
         <button
           id="play-button"
           className="bg-white-600 cursor-pointer flex"
-          onClick={isPlaying ? pauseSound : playSound}
+          onClick={togglePause}
           disabled={isLoading || !url}
         >
           {isPlaying ? (
@@ -39,6 +36,14 @@ export const ReplayButton = ({
           )}
         </button>
       </div>
+      {url && (
+        <ReactHowler
+          src={url}
+          playing={isPlaying}
+          preload={true}
+          onEnd={() => setPlaying(false)}
+        />
+      )}
     </>
   );
 };
