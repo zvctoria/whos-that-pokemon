@@ -12,12 +12,8 @@ export const ReplayButton = ({
 }) => {
   const [isPlaying, setPlaying] = useState(false);
 
-  const playSound = () => {
-    setPlaying(true);
-  };
-
-  const pauseSound = () => {
-    setPlaying(false);
+  const togglePause = () => {
+    setPlaying((isPlaying) => !isPlaying);
   };
 
   return (
@@ -29,7 +25,7 @@ export const ReplayButton = ({
         <button
           id="play-button"
           className="bg-white-600 cursor-pointer flex"
-          onClick={isPlaying ? pauseSound : playSound}
+          onClick={togglePause}
           disabled={isLoading || !url}
         >
           {isPlaying ? (
