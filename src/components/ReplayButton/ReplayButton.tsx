@@ -1,7 +1,7 @@
 import "./ReplayButton.css";
 import { useState } from "react";
 
-export const ReplayButton = () => {
+export const ReplayButton = ({ data, isLoading, error }) => {
   const [isPlaying, setPlaying] = useState(false);
 
   const playSound = () => {
@@ -13,18 +13,23 @@ export const ReplayButton = () => {
   };
 
   return (
-    <div className="flex justify-center my-8">
-      <button
-        id="play-button"
-        className="bg-white-600 cursor-pointer flex"
-        onClick={isPlaying ? pauseSound : playSound}
-      >
-        {isPlaying ? (
-          <span id="pixel-pause"></span>
-        ) : (
-          <span id="pixel-play"></span>
-        )}
-      </button>
-    </div>
+    <>
+      {isLoading && "Currently loading your Pokémon!"}
+      {error &&
+        "Seems like we couldn't load your Pokémon! Please check back later."}
+      <div className="flex justify-center my-8">
+        <button
+          id="play-button"
+          className="bg-white-600 cursor-pointer flex"
+          onClick={isPlaying ? pauseSound : playSound}
+        >
+          {isPlaying ? (
+            <span id="pixel-pause"></span>
+          ) : (
+            <span id="pixel-play"></span>
+          )}
+        </button>
+      </div>
+    </>
   );
 };
