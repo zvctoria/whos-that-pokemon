@@ -11,8 +11,26 @@
 
 body {
   margin: 0;
-  padding: 0;
+  background-color: #fd6b70;
+  color: black;
 }
 
 @media (prefers-color-scheme: light) {
+}
+
+@font-face {
+  font-family: "pixel-operator";
+  src: url("./assets/pixel-operator.woff2"), url("./assets/PixelOperator.ttf");
+}
+
+@font-face {
+  font-family: "pixel-operator";
+  src: url("./assets/pixel-operator-bold.woff2"),
+    url("./assets/pixel-operator-bold.ttf");
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "pokemon-gb";
+  src: url("./assets/PokemonGB.woff2"), url("./assets/PokemonGb-RAeo.ttf");
 }

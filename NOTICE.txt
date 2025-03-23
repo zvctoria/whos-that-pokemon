@@ -1,3 +1,6 @@
 ATTRIBUTIONS
 
 This project includes:
+<a href="https://www.textstudio.com/">Font generator</a>
+link: https://www.fontspace.com/pokemon-gb-font-f9621, license: Freeware
+Attribution for the pixel arrow: <a href="https://www.flaticon.com/free-icons/pixel" title="pixel icons">Pixel icons created by Taufik Ramadhan - Flaticon</a>
