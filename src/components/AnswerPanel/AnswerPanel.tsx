@@ -11,7 +11,7 @@ export const AnswerPanel = () => {
       <input
         id="answer-form"
         type="text"
-        className="pt-1.5 bg-white h-[2rem] mb-2 w-100 rounded focus:outline-none border-dotted border-b-3 border-b-stone-500"
+        className="pt-1.5 bg-white h-[2rem] mb-2 w-[90%] sm:w-[60%] lg:w-[50%] rounded focus:outline-none border-dotted border-b-3 border-b-stone-500"
         placeholder="Charizard"
       />
       <div id="last-line-container" className="flex justify-between">

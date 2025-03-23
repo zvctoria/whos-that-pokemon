@@ -59,7 +59,7 @@ const Landing = () => {
   return (
     <>
       <img
-        className="h-auto w-[60%] mx-auto sm:w-[60%] md:w-[50%] lg:w-[40%] xl:w-[30%] mt-5 mb-3"
+        className="h-auto w-[60%] mx-auto sm:w-[60%] md:w-[50%] lg:w-[40%] xl:w-[30%] mt-5.5 mb-2"
         src={logo}
         alt="Who's That Pokémon header"
       />
