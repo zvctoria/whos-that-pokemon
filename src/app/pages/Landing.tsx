@@ -57,29 +57,40 @@ const Landing = () => {
   const cryUrl = pokemon?.cries?.latest || "";
 
   return (
-    <div className="xl:mx-[20%]">
+    <>
       <img
-        className="h-auto w-[35%] mx-auto sm:w-[65%] md:w-[55%] lg:w-[45%] xl:w-[50%]"
+        className="h-auto w-[35%] mx-auto sm:w-[65%] md:w-[55%] lg:w-[45%] xl:w-[35%]"
         src={logo}
         alt="Who's That Pokémon header"
       />
-      <SelectPanel></SelectPanel>
-      <h1 className="text-[1.75rem] xl:text-[1rem] font-[pixel-operator,sans-serif] mx-auto w-[70%] text-center">
-        Listen to the Pokémon's cry and type your guess on the dotted line.
-      </h1>
-      <h2 className="hidden">Please click at least one generation! (Toggle)</h2>
-      <ReplayButton
-        isLoading={isLoading}
-        url={cryUrl}
-        error={error}
-      ></ReplayButton>
-      <AnswerPanel></AnswerPanel>
-      <HintPanel data={pokemon}></HintPanel>
-      <button>(when done) Try Again</button>
-      <SettingsButton></SettingsButton>
-      <PokeBall></PokeBall>
-      <div>{id}</div>
-    </div>
+      <div
+        id="content-container"
+        className="xl:mx-[20%] mx-[5%] bg-[#fafafa] rounded-md pt-3"
+      >
+        <div className="w-[95%] mx-auto mb-5">
+          <SelectPanel></SelectPanel>
+          <h1 className="text-[1.75rem] font-[pixel-operator,sans-serif] mx-auto w-[70%] text-center">
+            Listen to the Pokémon's cry and type your guess on the dotted line.
+          </h1>
+          <h2 className="hidden">
+            Please click at least one generation! (Toggle)
+          </h2>
+          <ReplayButton
+            isLoading={isLoading}
+            url={cryUrl}
+            error={error}
+          ></ReplayButton>
+          <AnswerPanel></AnswerPanel>
+        </div>
+        <div className="text-center">
+          <HintPanel data={pokemon}></HintPanel>
+          <button className="hidden">(when done) Try Again</button>
+          {/* <SettingsButton></SettingsButton>
+          <PokeBall></PokeBall> */}
+          {id}
+        </div>
+      </div>
+    </>
   );
 };
 
