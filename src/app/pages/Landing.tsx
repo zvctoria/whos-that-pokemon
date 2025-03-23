@@ -67,7 +67,7 @@ const Landing = () => {
         id="content-container"
         className="xl:mx-[20%] mx-[5%] bg-[#fafafa] rounded-md pt-3"
       >
-        <div className="w-[95%] mx-auto mb-5">
+        <div className="w-[95%] mx-auto mb-8">
           <SelectPanel></SelectPanel>
           <h1 className="text-[1.75rem] font-[pixel-operator,sans-serif] mx-auto w-[70%] text-center">
             Listen to the Pokémon's cry and type your guess on the dotted line.
@@ -82,12 +82,11 @@ const Landing = () => {
           ></ReplayButton>
           <AnswerPanel></AnswerPanel>
         </div>
-        <div className="text-center">
+        <div className="mx-auto text-center w-[80%] pb-5">
           <HintPanel data={pokemon}></HintPanel>
           <button className="hidden">(when done) Try Again</button>
           {/* <SettingsButton></SettingsButton>
           <PokeBall></PokeBall> */}
-          {id}
         </div>
       </div>
     </>

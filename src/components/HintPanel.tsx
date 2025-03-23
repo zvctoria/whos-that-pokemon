@@ -8,10 +8,12 @@ export const HintPanel = ({
 }) => {
   return (
     <>
-      <h1>Need a hint?</h1>
-      <h2>
-        Each incorrect guess will reveal helpful hints, like type, abilities,
-        and its sprite!
+      <h1 className="text-[2.5rem] font-bold font-[pixel-operator,sans-serif]">
+        Need a hint?
+      </h1>
+      <h2 className="text-[1.3rem] font-[pixel-operator,sans-serif]">
+        Each incorrect guess will reveal helpful hints, like its type,
+        abilities, and sprite!
       </h2>
       <div className="hidden">Type () () </div>
       <div className="hidden">
