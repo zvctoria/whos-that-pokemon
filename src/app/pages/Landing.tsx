@@ -59,17 +59,17 @@ const Landing = () => {
   return (
     <>
       <img
-        className="h-auto w-[60%] mx-auto sm:w-[60%] md:w-[50%] lg:w-[40%] xl:w-[30%] mt-5 mb-2"
+        className="h-auto w-[60%] mx-auto sm:w-[60%] md:w-[50%] lg:w-[40%] xl:w-[30%] mt-5 mb-3"
         src={logo}
         alt="Who's That Pokémon header"
       />
       <div
         id="content-container"
-        className="xl:mx-[20%] mx-[5%] bg-[#fafafa] rounded-xl pt-3"
+        className="xl:mx-[20%] mx-[5%] bg-[#fafafa] rounded-xl pt-4"
       >
-        <div className="w-[95%] mx-auto mb-5">
+        <div className="w-[95%] mx-auto mb-6">
           <SelectPanel></SelectPanel>
-          <h1 className="text-[1.75rem] font-[pixel-operator,sans-serif] mx-auto w-[70%] text-center">
+          <h1 className="text-[1.75rem] mx-auto w-[70%] text-center leading-9">
             Listen to the Pokémon's cry and type your guess on the dotted line.
           </h1>
           <h2 className="hidden">

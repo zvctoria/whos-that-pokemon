@@ -1,21 +1,46 @@
 import { z } from "zod";
 import { Pokemon } from "../lib/schema/index";
+import { useRef, useState } from "react";
 
 export const HintPanel = ({
   data,
 }: {
   data: z.infer<typeof Pokemon> | undefined;
 }) => {
+  const [typeUnlocked, setTypeUnlocked] = useState(false);
+
+  const hintRef = useRef(null);
+
+  const scrollToHint = () => {
+    hintRef.current.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+      inline: "start",
+    });
+  };
+
   return (
     <>
-      <h1 className="text-[2.5rem] font-bold font-[pixel-operator,sans-serif] leading-13 cursor-pointer">
+      <h1
+        onClick={scrollToHint}
+        className="text-[2.5rem] font-bold leading-13 cursor-pointer"
+      >
         Need a hint?
       </h1>
-      <h2 className="text-[1.3rem] font-[pixel-operator,sans-serif] leading-6.5">
+      <h2 className="text-[1.3rem] leading-6.5 mb-6">
         Each incorrect guess will reveal helpful hints, like its type,
         abilities, and sprite!
       </h2>
-      <div className="hidden">Type () () </div>
+      <hr className="mb-4 w-40 mx-auto h-1 opacity-20" />
+      {typeUnlocked ? (
+        <div ref={hintRef} className="hidden">
+          Type () (){" "}
+        </div>
+      ) : (
+        <p ref={hintRef} className="text-[1.5rem]">
+          Oh no! You haven't unlocked any hints yet.
+        </p>
+      )}
       <div className="hidden">
         This Pokémon weighs <p className="font-bold">number kg</p>
       </div>

@@ -13,6 +13,7 @@ body {
   margin: 0;
   background-color: #fd6b70;
   color: black;
+  font-family: pixel-operator, sans-serif;
 }
 
 @media (prefers-color-scheme: light) {
