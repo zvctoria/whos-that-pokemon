@@ -2,7 +2,8 @@ import { SelectPanel } from "../../components/SelectPanel";
 import { HintPanel } from "../../components/HintPanel";
 import { SettingsButton } from "../../components/SettingsButton";
 import { PokeBall } from "../../components/PokeBall";
-import { ReplayButton } from "../../components/ReplayButton/ReplayButton.jsx";
+import { ReplayButton } from "../../components/ReplayButton/ReplayButton.tsx";
+import { AnswerPanel } from "../../components/AnswerPanel/AnswerPanel.tsx";
 import logo from "../../assets/logo.png";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -56,26 +57,29 @@ const Landing = () => {
   const cryUrl = pokemon?.cries?.latest || "";
 
   return (
-    <>
+    <div className="xl:mx-[20%]">
       <img
-        className="h-auto w-1/2 mx-auto"
+        className="h-auto w-[35%] mx-auto sm:w-[65%] md:w-[55%] lg:w-[45%] xl:w-[50%]"
         src={logo}
         alt="Who's That Pokémon header"
       />
       <SelectPanel></SelectPanel>
-      <h2>Please click at least one generation! (Toggle)</h2>
+      <h1 className="text-[1.75rem] xl:text-[1rem] font-[pixel-operator,sans-serif] mx-auto w-[70%] text-center">
+        Listen to the Pokémon's cry and type your guess on the dotted line.
+      </h1>
+      <h2 className="hidden">Please click at least one generation! (Toggle)</h2>
       <ReplayButton
         isLoading={isLoading}
         url={cryUrl}
         error={error}
       ></ReplayButton>
-      <input type="text" className="block bg-white" />
+      <AnswerPanel></AnswerPanel>
       <HintPanel data={pokemon}></HintPanel>
       <button>(when done) Try Again</button>
       <SettingsButton></SettingsButton>
       <PokeBall></PokeBall>
       <div>{id}</div>
-    </>
+    </div>
   );
 };
 

@@ -1,0 +1,12 @@
+input::placeholder {
+  overflow: visible;
+}
+
+#dialog-box {
+  /* for the top lines: thin + thick. White border separates the box shadows */
+  box-shadow: 0 2px 0 2px black, inset 0 2px 0 2px black, 0 0 0 2px black,
+    inset 0 0 0 2px black;
+}
+
+#triangle {
+}
