@@ -59,15 +59,15 @@ const Landing = () => {
   return (
     <>
       <img
-        className="h-auto w-[35%] mx-auto sm:w-[65%] md:w-[55%] lg:w-[45%] xl:w-[35%]"
+        className="h-auto w-[60%] mx-auto sm:w-[60%] md:w-[50%] lg:w-[40%] xl:w-[30%] mt-5 mb-2"
         src={logo}
         alt="Who's That Pokémon header"
       />
       <div
         id="content-container"
-        className="xl:mx-[20%] mx-[5%] bg-[#fafafa] rounded-md pt-3"
+        className="xl:mx-[20%] mx-[5%] bg-[#fafafa] rounded-xl pt-3"
       >
-        <div className="w-[95%] mx-auto mb-8">
+        <div className="w-[95%] mx-auto mb-5">
           <SelectPanel></SelectPanel>
           <h1 className="text-[1.75rem] font-[pixel-operator,sans-serif] mx-auto w-[70%] text-center">
             Listen to the Pokémon's cry and type your guess on the dotted line.
@@ -82,7 +82,7 @@ const Landing = () => {
           ></ReplayButton>
           <AnswerPanel></AnswerPanel>
         </div>
-        <div className="mx-auto text-center w-[80%] pb-5">
+        <div className="mx-auto text-center w-[80%] pb-3">
           <HintPanel data={pokemon}></HintPanel>
           <button className="hidden">(when done) Try Again</button>
           {/* <SettingsButton></SettingsButton>

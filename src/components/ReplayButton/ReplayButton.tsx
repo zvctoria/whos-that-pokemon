@@ -22,7 +22,7 @@ export const ReplayButton = ({
       {isLoading && "Currently loading your Pokémon!"}
       {error &&
         "Seems like we couldn't load your Pokémon! Please check back later."}
-      <div className="flex justify-center my-8">
+      <div className="flex justify-center mt-7 mb-8">
         <button
           id="play-button"
           className="bg-white-600 cursor-pointer flex"

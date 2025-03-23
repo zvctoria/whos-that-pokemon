@@ -8,10 +8,10 @@ export const HintPanel = ({
 }) => {
   return (
     <>
-      <h1 className="text-[2.5rem] font-bold font-[pixel-operator,sans-serif]">
+      <h1 className="text-[2.5rem] font-bold font-[pixel-operator,sans-serif] leading-13 cursor-pointer">
         Need a hint?
       </h1>
-      <h2 className="text-[1.3rem] font-[pixel-operator,sans-serif]">
+      <h2 className="text-[1.3rem] font-[pixel-operator,sans-serif] leading-6.5">
         Each incorrect guess will reveal helpful hints, like its type,
         abilities, and sprite!
       </h2>
