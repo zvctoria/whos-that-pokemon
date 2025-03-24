@@ -20,8 +20,9 @@ export const AnswerPanel = ({
   const [guess, setGuess] = useState("");
   const [isWon, setWon] = useState(false);
 
-  const checkCorrectGuess = () => {
-    if (guess.toLowerCase() === answer.toLowerCase()) {
+  const checkCorrectGuess = (userGuess: string) => {
+    // userGuess variable required since async
+    if (userGuess.toLowerCase() === answer.toLowerCase()) {
       setWon(true);
     }
     // else: handle incorrect case
@@ -32,20 +33,23 @@ export const AnswerPanel = ({
   const handleSubmit = (event: any) => {
     // stop refresh
     event.preventDefault();
-    checkCorrectGuess();
+    checkCorrectGuess(guess);
   };
 
   // component rerenders if 'answer' is changed, but state variables still persists
   const newGame = () => {
     setWon(false);
     setGuess("");
+    setDropdown([]);
     handleReset();
   };
 
   const generateOptions = (e: any) => {
     // add variable just in case, since setState is async
-    const input = e.target.value;
+    let input = e.target.value;
     setGuess(input);
+    // keyboard input will now match, but we want comparisons done on lowercase
+    input = input.toLowerCase();
 
     // if I generate options based on a single letter, likely too many HTTP calls
     // PokeAPI results should all be in lowercase already
@@ -54,7 +58,7 @@ export const AnswerPanel = ({
         pokemon.name.startsWith(input)
       );
       // 3 autocomplete choices
-      // PROS: keeps everything on the page, makes choices more specific
+      // PROS: keeps everything on the page, makes choices more specific, faster and less expensive sprite loading
       // CONS: perhaps narrows choices too much
       const firstMatches = matching.slice(0, 3);
       // now, will show up in our list. Note: use div/buttons here for maximum customisability
@@ -65,6 +69,11 @@ export const AnswerPanel = ({
     } else {
       setDropdown([]);
     }
+  };
+
+  const handleSelect = (choice: string) => {
+    setGuess(choice);
+    checkCorrectGuess(choice);
   };
 
   return (
@@ -120,7 +129,11 @@ export const AnswerPanel = ({
                       alt={`sprite for ${option.name}`}
                       className="text-[0.5rem] w-[50px] h-[50px] mx-[1rem]"
                     />
-                    <button key={option.name} className="text-left text-[1rem]">
+                    <button
+                      key={option.name}
+                      className="text-left text-[1rem]"
+                      onClick={() => handleSelect(option.name)}
+                    >
                       {option.name}
                     </button>
                   </div>
