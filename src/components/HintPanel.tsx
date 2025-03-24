@@ -23,7 +23,7 @@ export const HintPanel = ({
     <>
       <h1
         onClick={scrollToHint}
-        className="text-[2.5rem] font-bold leading-13 cursor-pointer"
+        className="text-[2.5rem] font-bold leading-13 cursor-pointer w-[60%] mx-auto"
       >
         Need a hint?
       </h1>

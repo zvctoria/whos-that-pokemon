@@ -19,6 +19,15 @@ export const AnswerPanel = ({
   const [dropdown, setDropdown] = useState<{ name: string; url: string }[]>([]);
   const [guess, setGuess] = useState("");
   const [isWon, setWon] = useState(false);
+  const [isInputFocused, setInputFocused] = useState(false);
+  const [isDropdownFocused, setDropdownFocused] = useState(false);
+
+  const handleBlur = () => {
+    // if the user unfocuses input, they may be trying to select a dropdown option
+    if (!isDropdownFocused) {
+      setInputFocused(false);
+    }
+  };
 
   const checkCorrectGuess = (userGuess: string) => {
     // userGuess variable required since async
@@ -75,6 +84,7 @@ export const AnswerPanel = ({
     setGuess(choice);
     checkCorrectGuess(choice);
     setDropdown([]);
+    setDropdownFocused(false);
   };
 
   return (
@@ -108,12 +118,16 @@ export const AnswerPanel = ({
               placeholder="Charizard"
               value={guess}
               onChange={generateOptions}
+              onFocus={() => setInputFocused(true)}
+              onBlur={handleBlur}
             />
           </form>
-          {dropdown.length > 0 && (
+          {dropdown.length > 0 && isInputFocused && (
             <div
               id="dropdown-container"
               className="absolute bg-white flex flex-col bg-red cursor-pointer border-dotted border-x-3 border-b-3 border-b-stone-500"
+              onMouseOver={() => setDropdownFocused(true)}
+              onMouseLeave={() => setDropdownFocused(false)}
             >
               {dropdown.map((option) => {
                 const match = option.url.match(/(\d+)\/$/);
