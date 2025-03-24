@@ -5,7 +5,7 @@ import { HintPanel } from "../../components/HintPanel";
 import { ReplayButton } from "../../components/ReplayButton/ReplayButton.tsx";
 import { AnswerPanel } from "../../components/AnswerPanel/AnswerPanel.tsx";
 import logo from "../../assets/logo.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { z } from "zod";
 import { Pokemon, PokemonList } from "../../lib/schema/index";
@@ -50,9 +50,15 @@ async function fetchList() {
 //   );
 // }
 
+const getRandomId = () => Math.floor(Math.random() * TOTAL_POKEMON) + 1;
+
 const Landing = () => {
   // Assumes there are 1025 unique Pokémon. True as of now.
-  const [id, setId] = useState(Math.floor(Math.random() * TOTAL_POKEMON) + 1);
+  const [id, setId] = useState(getRandomId);
+
+  const handleReset = () => {
+    setId(getRandomId);
+  };
 
   // on first load-in, fetch all Pokémon names for use in search bar suggestions
   // Also ensures data is not stale.
@@ -77,6 +83,7 @@ const Landing = () => {
   });
 
   const cryUrl = pokemon?.cries?.latest || "";
+  const answer = pokemon?.name || "";
 
   return (
     <>
@@ -102,7 +109,11 @@ const Landing = () => {
             url={cryUrl}
             error={error}
           ></ReplayButton>
-          <AnswerPanel pokemonList={pokemonList}></AnswerPanel>
+          <AnswerPanel
+            pokemonList={pokemonList}
+            answer={answer}
+            handleReset={handleReset}
+          ></AnswerPanel>
         </div>
         <div className="mx-auto text-center w-[80%] pb-3">
           <HintPanel data={pokemon}></HintPanel>
