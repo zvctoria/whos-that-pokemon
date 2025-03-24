@@ -8,10 +8,14 @@ export const AnswerPanel = ({
   pokemonList,
   answer,
   handleReset,
+  handleIncorrect,
+  handleReverse,
 }: {
   pokemonList: z.infer<typeof PokemonList> | undefined;
   answer: string;
   handleReset: () => void;
+  handleIncorrect: () => void;
+  handleReverse: () => void;
 }) => {
   // NOTE: browser + img tag will automatically cache sprite images,
   // not to mention HTTP 2/3 supports multiplexing. Therefore, the performance
@@ -29,13 +33,19 @@ export const AnswerPanel = ({
     }
   };
 
+  // should be called both when submitting via. enter key or pressing an option
   const checkCorrectGuess = (userGuess: string) => {
     // userGuess variable required since async
     if (userGuess.toLowerCase() === answer.toLowerCase()) {
       setWon(true);
+    } else {
+      setGuess("");
+      setDropdown([]);
+      handleIncorrect();
+      setTimeout(() => {
+        handleReverse();
+      }, 700);
     }
-    // else: handle incorrect case
-    // this function should be called on enter-submit and on pressing an option
   };
 
   // TODO: event type

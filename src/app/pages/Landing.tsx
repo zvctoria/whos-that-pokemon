@@ -5,7 +5,7 @@ import { HintPanel } from "../../components/HintPanel";
 import { ReplayButton } from "../../components/ReplayButton/ReplayButton.tsx";
 import { AnswerPanel } from "../../components/AnswerPanel/AnswerPanel.tsx";
 import logo from "../../assets/logo.png";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { z } from "zod";
 import { Pokemon, PokemonList } from "../../lib/schema/index";
@@ -55,9 +55,18 @@ const getRandomId = () => Math.floor(Math.random() * TOTAL_POKEMON) + 1;
 const Landing = () => {
   // Assumes there are 1025 unique Pokémon. True as of now.
   const [id, setId] = useState(getRandomId);
+  const [isIncorrect, setIncorrect] = useState(false);
 
   const handleReset = () => {
     setId(getRandomId);
+  };
+
+  const handleIncorrect = () => {
+    setIncorrect(true);
+  };
+
+  const handleReverse = () => {
+    setIncorrect(false);
   };
 
   // on first load-in, fetch all Pokémon names for use in search bar suggestions
@@ -108,11 +117,14 @@ const Landing = () => {
             isLoading={isLoading}
             url={cryUrl}
             error={error}
+            isIncorrect={isIncorrect}
           ></ReplayButton>
           <AnswerPanel
             pokemonList={pokemonList}
             answer={answer}
             handleReset={handleReset}
+            handleIncorrect={handleIncorrect}
+            handleReverse={handleReverse}
           ></AnswerPanel>
         </div>
         <div className="mx-auto text-center w-[80%]">

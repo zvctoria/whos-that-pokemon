@@ -6,10 +6,12 @@ export const ReplayButton = ({
   url,
   isLoading,
   error,
+  isIncorrect,
 }: {
   url: string | undefined;
   isLoading: boolean;
   error: Error | null;
+  isIncorrect: boolean;
 }) => {
   const [isPlaying, setPlaying] = useState(false);
 
@@ -29,7 +31,9 @@ export const ReplayButton = ({
           onClick={togglePause}
           disabled={isLoading || !url}
         >
-          {isPlaying ? (
+          {isIncorrect ? (
+            <span></span>
+          ) : isPlaying ? (
             <span id="pixel-pause"></span>
           ) : (
             <span id="pixel-play"></span>
