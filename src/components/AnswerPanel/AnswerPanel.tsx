@@ -123,6 +123,7 @@ export const AnswerPanel = ({
                   <div
                     key={option.name}
                     className="flex hover:bg-stone-200 pr-[5rem]"
+                    onClick={() => handleSelect(option.name)}
                   >
                     <img
                       src={
@@ -133,10 +134,7 @@ export const AnswerPanel = ({
                       alt={`sprite for ${option.name}`}
                       className="text-[0.5rem] w-[50px] h-[50px] mx-[1rem]"
                     />
-                    <button
-                      className="text-left text-[1rem]"
-                      onClick={() => handleSelect(option.name)}
-                    >
+                    <button className="text-left text-[1rem]">
                       {option.name}
                     </button>
                   </div>
