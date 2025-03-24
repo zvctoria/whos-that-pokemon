@@ -1,7 +1,13 @@
 import "./AnswerPanel.css";
 import arrow from "../../assets/next.png";
+import { z } from "zod";
+import { PokemonList } from "../../lib/schema/index";
 
-export const AnswerPanel = () => {
+export const AnswerPanel = ({
+  pokemonList,
+}: {
+  pokemonList: z.infer<typeof PokemonList> | undefined;
+}) => {
   return (
     <div
       id="dialog-box"

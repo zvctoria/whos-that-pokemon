@@ -1,14 +1,16 @@
 import { SelectPanel } from "../../components/SelectPanel";
 import { HintPanel } from "../../components/HintPanel";
-import { SettingsButton } from "../../components/SettingsButton";
-import { PokeBall } from "../../components/PokeBall";
+// import { SettingsButton } from "../../components/SettingsButton";
+// import { PokeBall } from "../../components/PokeBall";
 import { ReplayButton } from "../../components/ReplayButton/ReplayButton.tsx";
 import { AnswerPanel } from "../../components/AnswerPanel/AnswerPanel.tsx";
 import logo from "../../assets/logo.png";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { z } from "zod";
-import { Pokemon } from "../../lib/schema/index";
+import { Pokemon, PokemonList } from "../../lib/schema/index";
+
+const TOTAL_POKEMON = 1025;
 
 async function fetchAndValidate<T>(
   url: string,
@@ -31,6 +33,13 @@ async function fetchPokemon(id: number) {
   return fetchAndValidate(`https://pokeapi.co/api/v2/pokemon/${id}`, Pokemon);
 }
 
+async function fetchList() {
+  return fetchAndValidate(
+    `https://pokeapi.co/api/v2/pokemon?limit=${TOTAL_POKEMON}`,
+    PokemonList
+  );
+}
+
 // async function fetchGeneration(id: number) {
 //   // potentially cool fields to incorporate later: is_baby, is_legendary
 //   // is_mythical, is_default, for extra guessing categories
@@ -43,8 +52,21 @@ async function fetchPokemon(id: number) {
 
 const Landing = () => {
   // Assumes there are 1025 unique Pokémon. True as of now.
-  const [id, setId] = useState(Math.floor(Math.random() * 1026));
+  const [id, setId] = useState(Math.floor(Math.random() * TOTAL_POKEMON) + 1);
 
+  // on first load-in, fetch all Pokémon names for use in search bar suggestions
+  // Also ensures data is not stale.
+  const {
+    data: pokemonList,
+    isLoading: listLoading,
+    error: listError,
+  } = useQuery({
+    queryKey: ["pokemonList"],
+    queryFn: () => fetchList(),
+  });
+
+  // for our purposes, using only the id's 1025 are suitable for now
+  // as we assume default Pokémon (no special forms)
   const {
     data: pokemon,
     isLoading,
@@ -80,7 +102,7 @@ const Landing = () => {
             url={cryUrl}
             error={error}
           ></ReplayButton>
-          <AnswerPanel></AnswerPanel>
+          <AnswerPanel pokemonList={pokemonList}></AnswerPanel>
         </div>
         <div className="mx-auto text-center w-[80%] pb-3">
           <HintPanel data={pokemon}></HintPanel>

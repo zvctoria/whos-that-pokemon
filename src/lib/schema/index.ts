@@ -34,12 +34,21 @@ export const Pokemon = z.object({
   types: z.array(PokemonType),
 });
 
-export const PokemonSpecies = z.object({
-  generation: NamedAPIResource,
-  varieties: z.array(
+// export const PokemonSpecies = z.object({
+//   generation: NamedAPIResource,
+//   varieties: z.array(
+//     z.object({
+//       is_default: z.boolean(),
+//       pokemon: NamedAPIResource,
+//     })
+//   ),
+// });
+
+export const PokemonList = z.object({
+  results: z.array(
     z.object({
-      is_default: z.boolean(),
-      pokemon: NamedAPIResource,
+      name: z.string(),
+      url: z.string().url(),
     })
   ),
 });
