@@ -16,7 +16,7 @@ export const AnswerPanel = ({
   // NOTE: browser + img tag will automatically cache sprite images,
   // not to mention HTTP 2/3 supports multiplexing. Therefore, the performance
   // hit from constant image calls is likely to be negligible.
-  const [dropdown, setDropdown] = useState([]);
+  const [dropdown, setDropdown] = useState<{ name: string; url: string }[]>([]);
   const [guess, setGuess] = useState("");
   const [isWon, setWon] = useState(false);
 
@@ -24,18 +24,44 @@ export const AnswerPanel = ({
     if (guess.toLowerCase() === answer.toLowerCase()) {
       setWon(true);
     }
+    // else: handle incorrect case
+    // this function should be called on enter-submit and on pressing an option
   };
 
+  // TODO: event type
   const handleSubmit = (event: any) => {
     // stop refresh
     event.preventDefault();
     checkCorrectGuess();
   };
 
+  // component rerenders if 'answer' is changed, but state variables still persists
   const newGame = () => {
     setWon(false);
     setGuess("");
     handleReset();
+  };
+
+  const generateOptions = (e: any) => {
+    // add variable just in case, since setState is async
+    const input = e.target.value;
+    setGuess(input);
+
+    // if I generate options based on a single letter, likely too many HTTP calls
+    // PokeAPI results should all be in lowercase already
+    if (input.length >= 2 && pokemonList) {
+      const matching = pokemonList.results.filter((pokemon) =>
+        pokemon.name.startsWith(input)
+      );
+      const firstMatches = matching.slice(0, 5);
+      // now, will show up in our list. Note: use div/buttons here for maximum customisability
+      // compared to select, ul/li, datalist, etc.
+      // TODO: in case links ever change, doing another API call to find front_default urls are ideal
+      // however, based on current PokeAPI assumptions, url is always the same
+      setDropdown(firstMatches);
+    } else {
+      setDropdown([]);
+    }
   };
 
   return (
@@ -68,9 +94,35 @@ export const AnswerPanel = ({
               className="pt-1.5 bg-white h-[2rem] mb-2 w-[90%] sm:w-[60%] lg:w-[50%] rounded focus:outline-none border-dotted border-b-3 border-b-stone-500"
               placeholder="Charizard"
               value={guess}
-              onChange={(e) => setGuess(e.target.value)}
+              onChange={generateOptions}
             />
           </form>
+          <div
+            id="dropdown-container"
+            className="w-[70%] flex flex-col bg-red cursor-pointer border-dotted border-3 border-b-stone-500"
+          >
+            {dropdown.map((option) => {
+              const match = option.url.match(/(\d+)\/$/);
+              const optionId = match ? match[1] : "";
+
+              return (
+                <div className="flex hover:bg-stone-500">
+                  <img
+                    src={
+                      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" +
+                      optionId +
+                      ".png"
+                    }
+                    alt={`sprite for ${option.name}`}
+                    className="text-[0.5rem]"
+                  />
+                  <button key={option.name} className="text-left text-[1rem]">
+                    {option.name}
+                  </button>
+                </div>
+              );
+            })}
+          </div>
           <div id="last-line-container" className="flex justify-between">
             <p>appeared!</p>
             <img
