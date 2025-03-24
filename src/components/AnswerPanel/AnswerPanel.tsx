@@ -74,6 +74,7 @@ export const AnswerPanel = ({
   const handleSelect = (choice: string) => {
     setGuess(choice);
     checkCorrectGuess(choice);
+    setDropdown([]);
   };
 
   return (
@@ -103,7 +104,7 @@ export const AnswerPanel = ({
             <input
               id="answer-form"
               type="text"
-              className="pt-1.5 bg-white h-[2rem] mb-2 w-[90%] sm:w-[60%] lg:w-[50%] rounded focus:outline-none border-dotted border-b-3 border-b-stone-500"
+              className="pt-1.5 bg-white h-[2rem] w-[90%] sm:w-[60%] lg:w-[50%] rounded focus:outline-none border-dotted border-b-3 border-b-stone-500"
               placeholder="Charizard"
               value={guess}
               onChange={generateOptions}
@@ -112,14 +113,17 @@ export const AnswerPanel = ({
           {dropdown.length > 0 && (
             <div
               id="dropdown-container"
-              className="absolute bg-white flex flex-col bg-red cursor-pointer border-dotted border-3 border-b-stone-500"
+              className="absolute bg-white flex flex-col bg-red cursor-pointer border-dotted border-x-3 border-b-3 border-b-stone-500"
             >
               {dropdown.map((option) => {
                 const match = option.url.match(/(\d+)\/$/);
                 const optionId = match ? match[1] : "";
 
                 return (
-                  <div className="flex hover:bg-stone-500 pr-[5rem]">
+                  <div
+                    key={option.name}
+                    className="flex hover:bg-stone-200 pr-[5rem]"
+                  >
                     <img
                       src={
                         "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" +
@@ -130,7 +134,6 @@ export const AnswerPanel = ({
                       className="text-[0.5rem] w-[50px] h-[50px] mx-[1rem]"
                     />
                     <button
-                      key={option.name}
                       className="text-left text-[1rem]"
                       onClick={() => handleSelect(option.name)}
                     >
@@ -142,7 +145,7 @@ export const AnswerPanel = ({
             </div>
           )}
           <div id="last-line-container" className="flex justify-between">
-            <p>appeared!</p>
+            <p className="mt-1.5">appeared!</p>
             <img
               className="w-5 h-5 rotate-90 mt-2 mr-1"
               src={arrow}
