@@ -42,6 +42,8 @@ export const AnswerPanel = ({
   const handleSubmit = (event: any) => {
     // stop refresh
     event.preventDefault();
+    // capitals only for look purposes
+    setGuess(capitaliseFirst(guess));
     checkCorrectGuess(guess);
   };
 
@@ -81,11 +83,15 @@ export const AnswerPanel = ({
   };
 
   const handleSelect = (choice: string) => {
-    setGuess(choice);
+    setGuess(capitaliseFirst(choice));
     checkCorrectGuess(choice);
     setDropdown([]);
     setDropdownFocused(false);
   };
+
+  function capitaliseFirst(name: string) {
+    return name[0].toUpperCase() + name.slice(1);
+  }
 
   return (
     <div
@@ -131,6 +137,7 @@ export const AnswerPanel = ({
             >
               {dropdown.map((option) => {
                 const match = option.url.match(/(\d+)\/$/);
+                // capture group is index [1]
                 const optionId = match ? match[1] : "";
 
                 return (
@@ -148,7 +155,7 @@ export const AnswerPanel = ({
                       alt={`sprite for ${option.name}`}
                       className="text-[0.5rem] w-[50px] h-[50px] mx-[1rem]"
                     />
-                    <button className="text-left text-[1rem]">
+                    <button className="text-left text-[1rem] first-letter:uppercase">
                       {option.name}
                     </button>
                   </div>
