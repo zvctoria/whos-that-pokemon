@@ -88,7 +88,7 @@ const Landing = () => {
   return (
     <>
       <img
-        className="h-auto w-[60%] mx-auto sm:w-[60%] md:w-[50%] lg:w-[40%] xl:w-[30%] mt-5.5 mb-2"
+        className="h-auto w-[55%] mx-auto sm:w-[55%] md:w-[45%] lg:w-[35%] xl:w-[25%] mt-5.5 mb-2"
         src={logo}
         alt="Who's That Pokémon header"
       />
@@ -115,7 +115,7 @@ const Landing = () => {
             handleReset={handleReset}
           ></AnswerPanel>
         </div>
-        <div className="mx-auto text-center w-[80%] pb-3">
+        <div className="mx-auto text-center w-[80%]">
           <HintPanel data={pokemon}></HintPanel>
           <button className="hidden">(when done) Try Again</button>
           {/* <SettingsButton></SettingsButton>

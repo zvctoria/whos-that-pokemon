@@ -49,11 +49,14 @@ export const AnswerPanel = ({
 
     // if I generate options based on a single letter, likely too many HTTP calls
     // PokeAPI results should all be in lowercase already
-    if (input.length >= 2 && pokemonList) {
+    if (input.length >= 1 && pokemonList) {
       const matching = pokemonList.results.filter((pokemon) =>
         pokemon.name.startsWith(input)
       );
-      const firstMatches = matching.slice(0, 5);
+      // 3 autocomplete choices
+      // PROS: keeps everything on the page, makes choices more specific
+      // CONS: perhaps narrows choices too much
+      const firstMatches = matching.slice(0, 3);
       // now, will show up in our list. Note: use div/buttons here for maximum customisability
       // compared to select, ul/li, datalist, etc.
       // TODO: in case links ever change, doing another API call to find front_default urls are ideal
@@ -87,7 +90,7 @@ export const AnswerPanel = ({
       ) : (
         <div id="not-won">
           <p className="mb-0.75">A wild</p>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} autoComplete="off">
             <input
               id="answer-form"
               type="text"
@@ -97,32 +100,34 @@ export const AnswerPanel = ({
               onChange={generateOptions}
             />
           </form>
-          <div
-            id="dropdown-container"
-            className="w-[70%] flex flex-col bg-red cursor-pointer border-dotted border-3 border-b-stone-500"
-          >
-            {dropdown.map((option) => {
-              const match = option.url.match(/(\d+)\/$/);
-              const optionId = match ? match[1] : "";
+          {dropdown.length > 0 && (
+            <div
+              id="dropdown-container"
+              className="absolute bg-white flex flex-col bg-red cursor-pointer border-dotted border-3 border-b-stone-500"
+            >
+              {dropdown.map((option) => {
+                const match = option.url.match(/(\d+)\/$/);
+                const optionId = match ? match[1] : "";
 
-              return (
-                <div className="flex hover:bg-stone-500">
-                  <img
-                    src={
-                      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" +
-                      optionId +
-                      ".png"
-                    }
-                    alt={`sprite for ${option.name}`}
-                    className="text-[0.5rem]"
-                  />
-                  <button key={option.name} className="text-left text-[1rem]">
-                    {option.name}
-                  </button>
-                </div>
-              );
-            })}
-          </div>
+                return (
+                  <div className="flex hover:bg-stone-500 pr-[5rem]">
+                    <img
+                      src={
+                        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" +
+                        optionId +
+                        ".png"
+                      }
+                      alt={`sprite for ${option.name}`}
+                      className="text-[0.5rem] w-[50px] h-[50px] mx-[1rem]"
+                    />
+                    <button key={option.name} className="text-left text-[1rem]">
+                      {option.name}
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          )}
           <div id="last-line-container" className="flex justify-between">
             <p>appeared!</p>
             <img

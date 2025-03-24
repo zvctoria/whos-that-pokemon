@@ -27,17 +27,15 @@ export const HintPanel = ({
       >
         Need a hint?
       </h1>
-      <h2 className="text-[1.3rem] leading-6.5 mb-6">
+      <h2 className="text-[1.3rem] leading-6.5 mb-4">
         Each incorrect guess will reveal helpful hints, like its type,
         abilities, and sprite!
       </h2>
-      <hr className="mb-4 w-40 mx-auto h-1 opacity-20" />
+      <hr className="my-6 w-40 mx-auto h-1 opacity-20" />
       {typeUnlocked ? (
-        <div ref={hintRef} className="hidden">
-          Type () (){" "}
-        </div>
+        <div className="hidden">Type () () </div>
       ) : (
-        <p ref={hintRef} className="text-[1.5rem]">
+        <p className="text-[1.5rem]">
           Oh no! You haven't unlocked any hints yet.
         </p>
       )}
@@ -57,6 +55,9 @@ export const HintPanel = ({
         </div>
       </div>
       <div className="hidden">Sprite</div>
+      <div ref={hintRef} className="mt-3 text-[#fafafa]">
+        Victoria Zhao
+      </div>
     </>
   );
 };
