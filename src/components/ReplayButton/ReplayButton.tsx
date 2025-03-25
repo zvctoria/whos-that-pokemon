@@ -1,6 +1,7 @@
 import "./ReplayButton.css";
 import { useState } from "react";
 import ReactPlayer from "react-player";
+import spinner from "../../assets/90-ring-with-bg.svg";
 
 export const ReplayButton = ({
   url,
@@ -21,7 +22,6 @@ export const ReplayButton = ({
 
   return (
     <>
-      {isLoading && "Currently loading your Pokémon!"}
       {error &&
         "Seems like we couldn't load your Pokémon! Please check back later."}
       <div className="flex justify-center mt-7 mb-8">
@@ -31,8 +31,16 @@ export const ReplayButton = ({
           onClick={togglePause}
           disabled={isLoading || !url}
         >
-          {isIncorrect ? (
-            <span></span>
+          {isLoading ? (
+            <span className="text-center align-middle">
+              <img
+                src={spinner}
+                alt="spinner"
+                className="w-[15rem] h-[15rem]"
+              />
+            </span>
+          ) : isIncorrect ? (
+            <span id="pixel-x"></span>
           ) : isPlaying ? (
             <span id="pixel-pause"></span>
           ) : (

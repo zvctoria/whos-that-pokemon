@@ -39,11 +39,11 @@ export const AnswerPanel = ({
     if (userGuess.toLowerCase() === answer.toLowerCase()) {
       setWon(true);
     } else {
-      setGuess("");
       setDropdown([]);
       handleIncorrect();
       setTimeout(() => {
         handleReverse();
+        setGuess("");
       }, 700);
     }
   };
@@ -53,7 +53,9 @@ export const AnswerPanel = ({
     // stop refresh
     event.preventDefault();
     // capitals only for look purposes
-    setGuess(capitaliseFirst(guess));
+    if (guess.length > 0 && guess !== "") {
+      setGuess(capitaliseFirst(guess));
+    }
     checkCorrectGuess(guess);
   };
 
