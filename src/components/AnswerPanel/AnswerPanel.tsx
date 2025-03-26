@@ -8,10 +8,14 @@ export const AnswerPanel = ({
   pokemonList,
   answer,
   handleReset,
+  handleIncorrect,
+  handleReverse,
 }: {
   pokemonList: z.infer<typeof PokemonList> | undefined;
   answer: string;
   handleReset: () => void;
+  handleIncorrect: () => void;
+  handleReverse: () => void;
 }) => {
   // NOTE: browser + img tag will automatically cache sprite images,
   // not to mention HTTP 2/3 supports multiplexing. Therefore, the performance
@@ -19,20 +23,39 @@ export const AnswerPanel = ({
   const [dropdown, setDropdown] = useState<{ name: string; url: string }[]>([]);
   const [guess, setGuess] = useState("");
   const [isWon, setWon] = useState(false);
+  const [isInputFocused, setInputFocused] = useState(false);
+  const [isDropdownFocused, setDropdownFocused] = useState(false);
 
+  const handleBlur = () => {
+    // if the user unfocuses input, they may be trying to select a dropdown option
+    if (!isDropdownFocused) {
+      setInputFocused(false);
+    }
+  };
+
+  // should be called both when submitting via. enter key or pressing an option
   const checkCorrectGuess = (userGuess: string) => {
     // userGuess variable required since async
     if (userGuess.toLowerCase() === answer.toLowerCase()) {
       setWon(true);
+    } else {
+      setDropdown([]);
+      handleIncorrect();
+      setTimeout(() => {
+        handleReverse();
+        setGuess("");
+      }, 700);
     }
-    // else: handle incorrect case
-    // this function should be called on enter-submit and on pressing an option
   };
 
   // TODO: event type
   const handleSubmit = (event: any) => {
     // stop refresh
     event.preventDefault();
+    // capitals only for look purposes
+    if (guess.length > 0 && guess !== "") {
+      setGuess(capitaliseFirst(guess));
+    }
     checkCorrectGuess(guess);
   };
 
@@ -72,9 +95,15 @@ export const AnswerPanel = ({
   };
 
   const handleSelect = (choice: string) => {
-    setGuess(choice);
+    setGuess(capitaliseFirst(choice));
     checkCorrectGuess(choice);
+    setDropdown([]);
+    setDropdownFocused(false);
   };
+
+  function capitaliseFirst(name: string) {
+    return name[0].toUpperCase() + name.slice(1);
+  }
 
   return (
     <div
@@ -103,23 +132,32 @@ export const AnswerPanel = ({
             <input
               id="answer-form"
               type="text"
-              className="pt-1.5 bg-white h-[2rem] mb-2 w-[90%] sm:w-[60%] lg:w-[50%] rounded focus:outline-none border-dotted border-b-3 border-b-stone-500"
+              className="pt-1.5 bg-white h-[2rem] w-[90%] sm:w-[60%] lg:w-[50%] rounded focus:outline-none border-dotted border-b-3 border-b-stone-500"
               placeholder="Charizard"
               value={guess}
               onChange={generateOptions}
+              onFocus={() => setInputFocused(true)}
+              onBlur={handleBlur}
             />
           </form>
-          {dropdown.length > 0 && (
+          {dropdown.length > 0 && isInputFocused && (
             <div
               id="dropdown-container"
-              className="absolute bg-white flex flex-col bg-red cursor-pointer border-dotted border-3 border-b-stone-500"
+              className="absolute bg-white flex flex-col bg-red cursor-pointer border-dotted border-x-3 border-b-3 border-b-stone-500"
+              onMouseOver={() => setDropdownFocused(true)}
+              onMouseLeave={() => setDropdownFocused(false)}
             >
               {dropdown.map((option) => {
                 const match = option.url.match(/(\d+)\/$/);
+                // capture group is index [1]
                 const optionId = match ? match[1] : "";
 
                 return (
-                  <div className="flex hover:bg-stone-500 pr-[5rem]">
+                  <div
+                    key={option.name}
+                    className="flex hover:bg-stone-200 pr-[5rem]"
+                    onClick={() => handleSelect(option.name)}
+                  >
                     <img
                       src={
                         "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" +
@@ -129,11 +167,7 @@ export const AnswerPanel = ({
                       alt={`sprite for ${option.name}`}
                       className="text-[0.5rem] w-[50px] h-[50px] mx-[1rem]"
                     />
-                    <button
-                      key={option.name}
-                      className="text-left text-[1rem]"
-                      onClick={() => handleSelect(option.name)}
-                    >
+                    <button className="text-left text-[1rem] first-letter:uppercase">
                       {option.name}
                     </button>
                   </div>
@@ -142,7 +176,7 @@ export const AnswerPanel = ({
             </div>
           )}
           <div id="last-line-container" className="flex justify-between">
-            <p>appeared!</p>
+            <p className="mt-1.5">appeared!</p>
             <img
               className="w-5 h-5 rotate-90 mt-2 mr-1"
               src={arrow}
