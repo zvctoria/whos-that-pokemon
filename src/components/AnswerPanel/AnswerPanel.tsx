@@ -2,7 +2,7 @@ import "./AnswerPanel.css";
 import arrow from "../../assets/next.png";
 import { z } from "zod";
 import { PokemonList } from "../../lib/schema/index";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export const AnswerPanel = ({
   pokemonList,

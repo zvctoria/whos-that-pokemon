@@ -7,12 +7,12 @@ export const HintPanel = ({
 }: {
   data: z.infer<typeof Pokemon> | undefined;
 }) => {
-  const [typeUnlocked, setTypeUnlocked] = useState(false);
+  const [typeUnlocked] = useState(false);
 
-  const hintRef = useRef(null);
+  const hintRef = useRef<HTMLDivElement | null>(null);
 
   const scrollToHint = () => {
-    hintRef.current.scrollIntoView({
+    hintRef.current?.scrollIntoView({
       behavior: "smooth",
       block: "end",
       inline: "start",
@@ -54,7 +54,7 @@ export const HintPanel = ({
           <p>Description</p>
         </div>
       </div>
-      <div className="hidden">Sprite</div>
+      <div className="hidden">Sprite {data?.name}</div>
       <div ref={hintRef} className="mt-3 text-[#fafafa]">
         Victoria Zhao
       </div>

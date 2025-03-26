@@ -71,11 +71,7 @@ const Landing = () => {
 
   // on first load-in, fetch all Pokémon names for use in search bar suggestions
   // Also ensures data is not stale.
-  const {
-    data: pokemonList,
-    isLoading: listLoading,
-    error: listError,
-  } = useQuery({
+  const { data: pokemonList } = useQuery({
     queryKey: ["pokemonList"],
     queryFn: () => fetchList(),
   });
