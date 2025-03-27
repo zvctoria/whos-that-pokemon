@@ -1,4 +1,8 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  redirect,
+  RouterProvider,
+} from "react-router-dom";
 import { useMemo } from "react";
 import { QueryClient, useQueryClient } from "@tanstack/react-query";
 import { paths } from "./config/paths";
@@ -21,7 +25,16 @@ export const createAppRouter = (queryClient: QueryClient) =>
   createBrowserRouter([
     {
       path: paths.landing.path,
-      lazy: () => import("./pages/Landing").then(convert(queryClient)),
+      children: [
+        {
+          index: true,
+          loader: async () => redirect("/pokemon"),
+        },
+        {
+          path: "pokemon",
+          lazy: () => import("./pages/Landing").then(convert(queryClient)),
+        },
+      ],
     },
     {
       path: "*",
