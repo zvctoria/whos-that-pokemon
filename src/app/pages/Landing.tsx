@@ -9,6 +9,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { z } from "zod";
 import { Pokemon, PokemonList } from "../../lib/schema/index";
+import { isIE, isSafari } from "react-device-detect";
 
 const TOTAL_POKEMON = 1025;
 
@@ -103,18 +104,40 @@ const Landing = () => {
       >
         <div className="w-[95%] mx-auto mb-6">
           <SelectPanel></SelectPanel>
-          <h1 className="text-[1.75rem] mx-auto w-[70%] text-center leading-9">
-            Listen to the Pokémon's cry and type your guess on the dotted line.
-          </h1>
-          <h2 className="hidden">
-            Please click at least one generation! (Toggle)
-          </h2>
-          <ReplayButton
-            isLoading={isLoading}
-            url={cryUrl}
-            error={error}
-            isIncorrect={isIncorrect}
-          ></ReplayButton>
+          {isIE || isSafari ? (
+            <div>
+              <h1 className="text-[1.75rem] mx-auto w-[70%] text-center leading-9">
+                Use the Pokémon’s sprite, rather than its cry, and type your
+                guess on the dotted line.
+              </h1>
+              <h2 className="text-[1.1rem] mx-auto w-[90%] text-center leading-9">
+                It seems that you are using{" "}
+                <b className="text-[#fd6b70]">Safari or Internet Explorer</b>.
+                Your browser version may not support playing the .ogg files
+                provided by PokéAPI. For the best experience with audio, try
+                playing on another browser.
+              </h2>
+              <img
+                src={pokemon?.sprites.front_default}
+                alt="sprite"
+                className="mx-auto w-[30%] h-auto brightness-0"
+              />
+            </div>
+          ) : (
+            <div>
+              <h1 className="text-[1.75rem] mx-auto w-[70%] text-center leading-9">
+                Listen to the Pokémon's cry and type your guess on the dotted
+                line.
+              </h1>
+              <ReplayButton
+                isLoading={isLoading}
+                url={cryUrl}
+                error={error}
+                isIncorrect={isIncorrect}
+              ></ReplayButton>
+            </div>
+          )}
+
           <AnswerPanel
             pokemonList={pokemonList}
             answer={answer}

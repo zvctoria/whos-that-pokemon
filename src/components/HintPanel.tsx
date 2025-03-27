@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { Pokemon } from "../lib/schema/index";
 import { useRef, useState } from "react";
+// import { isIE, isSafari } from "react-device-detect";
+// NOTE: to reveal the sprite hint or not
 
 export const HintPanel = ({
   data,
