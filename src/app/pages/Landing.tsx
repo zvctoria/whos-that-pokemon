@@ -58,6 +58,7 @@ const Landing = () => {
   // Assumes there are 1025 unique Pokémon. True as of now.
   const [id, setId] = useState(getRandomId);
   const [isIncorrect, setIncorrect] = useState(false);
+  const [incorrectCount, setIncorrectCount] = useState(0);
 
   const handleReset = () => {
     setId(getRandomId);
@@ -69,6 +70,10 @@ const Landing = () => {
 
   const handleReverse = () => {
     setIncorrect(false);
+  };
+
+  const handleCount = () => {
+    setIncorrectCount(incorrectCount + 1);
   };
 
   // on first load-in, fetch all Pokémon names for use in search bar suggestions
@@ -138,17 +143,17 @@ const Landing = () => {
               ></ReplayButton>
             </div>
           )}
-
           <AnswerPanel
             pokemonList={pokemonList}
             answer={answer}
             handleReset={handleReset}
             handleIncorrect={handleIncorrect}
             handleReverse={handleReverse}
+            handleIncreaseCount={handleCount}
           ></AnswerPanel>
         </div>
         <div className="mx-auto text-center w-[80%]">
-          <HintPanel data={pokemon}></HintPanel>
+          <HintPanel data={pokemon} count={incorrectCount}></HintPanel>
           <button className="hidden">(when done) Try Again</button>
           {/* <SettingsButton></SettingsButton>
           <PokeBall></PokeBall> */}

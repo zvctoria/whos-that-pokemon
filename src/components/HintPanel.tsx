@@ -1,15 +1,17 @@
 import { z } from "zod";
 import { Pokemon } from "../lib/schema/index";
 import { useRef, useState } from "react";
-// import { isIE, isSafari } from "react-device-detect";
-// NOTE: to reveal the sprite hint or not
+import { isIE, isSafari } from "react-device-detect";
 
 export const HintPanel = ({
   data,
+  count,
 }: {
   data: z.infer<typeof Pokemon> | undefined;
+  count: number;
 }) => {
-  const [typeUnlocked] = useState(false);
+  let spriteUnlocked = false;
+  let typeUnlocked = false;
 
   const hintRef = useRef<HTMLDivElement | null>(null);
 
@@ -21,25 +23,59 @@ export const HintPanel = ({
     });
   };
 
+  if (count >= 1) {
+    spriteUnlocked = true;
+  }
+
+  if (count >= 2) {
+    typeUnlocked = true;
+  }
+
+  const isCompatible = !(isIE || isSafari);
+
   return (
     <>
-      <h1
-        onClick={scrollToHint}
-        className="text-[2.5rem] font-bold leading-13 cursor-pointer w-[60%] mx-auto"
-      >
-        Need a hint?
-      </h1>
+      {count > 0 ? (
+        <h1
+          onClick={scrollToHint}
+          className="text-[2.5rem] text-[#fd6b70] font-bold leading-13 cursor-pointer w-[60%] mx-auto"
+        >
+          Hints unlocked!
+        </h1>
+      ) : (
+        <h1
+          onClick={scrollToHint}
+          className="text-[2.5rem] font-bold leading-13 cursor-pointer w-[60%] mx-auto"
+        >
+          Need a hint?
+        </h1>
+      )}
+
       <h2 className="text-[1.3rem] leading-6.5 mb-4">
         Each incorrect guess will reveal helpful hints, like its type,
         abilities, and sprite!
       </h2>
       <hr className="my-6 w-40 mx-auto h-1 opacity-20" />
-      {typeUnlocked ? (
-        <div className="hidden">Type () () </div>
+      {spriteUnlocked && isCompatible ? (
+        <div className="flex items-center justify-center">
+          <h3 className="text-[1.75rem] font-bold">Sprite</h3>
+          <img
+            src={data?.sprites.front_default}
+            alt="sprite"
+            className="w-[10rem] h-auto brightness-0"
+          />
+        </div>
+      ) : !isCompatible ? (
+        <p className="text-[1.5rem]">
+          No hints implemented yet for your browser!
+        </p>
       ) : (
         <p className="text-[1.5rem]">
           Oh no! You haven't unlocked any hints yet.
         </p>
+      )}
+      {typeUnlocked && isCompatible && (
+        <div className="text-[1.5rem]">Other hints not implemented yet!</div>
       )}
       <div className="hidden">
         This Pokémon weighs <p className="font-bold">number kg</p>

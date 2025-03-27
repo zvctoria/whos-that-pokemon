@@ -10,12 +10,14 @@ export const AnswerPanel = ({
   handleReset,
   handleIncorrect,
   handleReverse,
+  handleIncreaseCount,
 }: {
   pokemonList: z.infer<typeof PokemonList> | undefined;
   answer: string;
   handleReset: () => void;
   handleIncorrect: () => void;
   handleReverse: () => void;
+  handleIncreaseCount: () => void;
 }) => {
   // NOTE: browser + img tag will automatically cache sprite images,
   // not to mention HTTP 2/3 supports multiplexing. Therefore, the performance
@@ -43,6 +45,7 @@ export const AnswerPanel = ({
       handleIncorrect();
       setTimeout(() => {
         handleReverse();
+        handleIncreaseCount();
         setGuess("");
       }, 700);
     }
