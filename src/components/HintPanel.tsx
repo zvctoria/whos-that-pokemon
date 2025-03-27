@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { Pokemon } from "../lib/schema/index";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { isIE, isSafari } from "react-device-detect";
 
 export const HintPanel = ({
@@ -31,7 +31,7 @@ export const HintPanel = ({
     typeUnlocked = true;
   }
 
-  const isCompatible = !(isIE || isSafari);
+  const isCompatible = !isIE && !isSafari;
 
   return (
     <>
