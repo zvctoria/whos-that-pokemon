@@ -4,6 +4,7 @@ import { HintPanel } from "../../components/HintPanel";
 // import { PokeBall } from "../../components/PokeBall";
 import { ReplayButton } from "../../components/ReplayButton/ReplayButton.tsx";
 import { AnswerPanel } from "../../components/AnswerPanel/AnswerPanel.tsx";
+import { ReplacementSprite } from "../../components/ReplacementSprite.tsx";
 import logo from "../../assets/logo.png";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -113,15 +114,15 @@ const Landing = () => {
               <h2 className="text-[1.1rem] mx-auto w-[90%] text-center leading-9">
                 It seems that you are using{" "}
                 <b className="text-[#fd6b70]">Safari or Internet Explorer</b>.
-                Your browser version may not support playing the .ogg files
-                provided by PokéAPI. For the best experience with audio, try
-                playing on another browser.
+                For the original experience with audio, try playing on another
+                browser as your current browser version may not support the .ogg
+                files provided by PokéAPI.
               </h2>
-              <img
-                src={pokemon?.sprites.front_default}
-                alt="sprite"
-                className="mx-auto w-[30%] h-auto brightness-0"
-              />
+              <ReplacementSprite
+                data={pokemon}
+                isLoading={isLoading}
+                isIncorrect={isIncorrect}
+              ></ReplacementSprite>
             </div>
           ) : (
             <div>
