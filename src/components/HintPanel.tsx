@@ -98,16 +98,14 @@ export const HintPanel = ({
         </p>
       )}
       {weightUnlocked && (
-        <>
-          <h3 className="text-[1.75rem] leading-7 mb-8">
-            This Pokémon weighs <b>{data?.weight ? data.weight / 10 : "N/A"}</b>{" "}
-            kilograms and is <b>{data?.height ? data.height / 10 : "N/A"}</b>{" "}
-            metres tall.
-          </h3>
-        </>
+        <h3 className="text-[1.75rem] leading-7 mb-8">
+          This Pokémon weighs <b>{data?.weight ? data.weight / 10 : "N/A"}</b>{" "}
+          kilograms and is <b>{data?.height ? data.height / 10 : "N/A"}</b>{" "}
+          metres tall.
+        </h3>
       )}
       {abilitiesUnlocked && <div>ability hint</div>}
-      {spriteUnlocked && isCompatible ? (
+      {spriteUnlocked && isCompatible && (
         <>
           <div className="flex items-center justify-center mb-3">
             <h3 className="text-[1.75rem] font-bold">Sprite</h3>
@@ -117,11 +115,22 @@ export const HintPanel = ({
               className="w-[10rem] h-auto brightness-0"
             />
           </div>
-          <p className="text-[1.5rem]">No more hints available!</p>
+          <p className="text-[1.5rem]">
+            No more hints available! Still confused?
+          </p>
         </>
-      ) : !isCompatible ? (
-        <p className="text-[1.5rem]">No more hints available!</p>
-      ) : null}
+      )}
+      {spriteUnlocked && !isCompatible && (
+        <p className="text-[1.5rem]">
+          No more hints available! Still confused?
+        </p>
+      )}
+      {spriteUnlocked && (
+        <div className="flex justify-center gap-x-10 text-[1.5rem] mt-6">
+          <button className="cursor-pointer  w-[20%]">Reveal Answer</button>
+          <button className="cursor-pointer w-[20%]">Try a New Pokémon</button>
+        </div>
+      )}
       <div ref={hintRef} className="mt-3 text-[#fafafa]">
         Victoria Zhao
       </div>
