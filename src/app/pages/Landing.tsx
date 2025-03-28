@@ -61,7 +61,10 @@ const Landing = () => {
   const [incorrectCount, setIncorrectCount] = useState(0);
 
   const handleReset = () => {
+    // reset pokemon
     setId(getRandomId);
+    // reset incorrect count, to reset hints
+    setIncorrectCount(0);
   };
 
   const handleIncorrect = () => {
