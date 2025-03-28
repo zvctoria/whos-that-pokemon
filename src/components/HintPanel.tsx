@@ -19,7 +19,7 @@ export const HintPanel = ({
   let weightUnlocked = false;
   let typeUnlocked = false;
   let spriteUnlocked = false;
-  let abilitiesUnlocked = false;
+  // let abilitiesUnlocked = false;
 
   const hintRef = useRef<HTMLDivElement | null>(null);
   const [isAnswerRevealed, setIsAnswerRevealed] = useState(false);
