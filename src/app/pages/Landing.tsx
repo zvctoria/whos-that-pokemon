@@ -9,8 +9,12 @@ import logo from "../../assets/logo.png";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { z } from "zod";
-import { Pokemon, PokemonList } from "../../lib/schema/index";
-import { isIE, isSafari } from "react-device-detect";
+import {
+  Pokemon,
+  PokemonList,
+  PokemonTypeSprite,
+} from "../../lib/schema/index";
+import { isIE, isSafari, isMobile } from "react-device-detect";
 
 const TOTAL_POKEMON = 1025;
 
@@ -29,6 +33,10 @@ async function fetchAndValidate<T>(
   console.log("Validated data:", parsedData);
 
   return parsedData;
+}
+
+async function fetchType(typeUrl: string) {
+  return fetchAndValidate(typeUrl, PokemonTypeSprite);
 }
 
 async function fetchPokemon(id: number) {
@@ -60,7 +68,16 @@ const Landing = () => {
   const [isIncorrect, setIncorrect] = useState(false);
   const [incorrectCount, setIncorrectCount] = useState(0);
 
+  const [dropdown, setDropdown] = useState<{ name: string; url: string }[]>([]);
+  const [guess, setGuess] = useState("");
+  const [isWon, setWon] = useState(false);
+  const [isDropdownFocused, setDropdownFocused] = useState(false);
+
   const handleReset = () => {
+    setWon(false);
+    setGuess("");
+    setDropdown([]);
+    setDropdownFocused(false);
     // reset pokemon
     setId(getRandomId);
     // reset incorrect count, to reset hints
@@ -76,7 +93,24 @@ const Landing = () => {
   };
 
   const handleCount = () => {
-    setIncorrectCount(incorrectCount + 1);
+    // safer since async
+    setIncorrectCount((prevIncorrectCount) => prevIncorrectCount + 1);
+  };
+
+  const handleWon = () => {
+    setWon(true);
+  };
+
+  const handleGuess = (newGuess: string) => {
+    setGuess(newGuess);
+  };
+
+  const handleDropdown = (newDropdown: { name: string; url: string }[]) => {
+    setDropdown(newDropdown);
+  };
+
+  const handleDropdownFocused = (newDropdownBool: boolean) => {
+    setDropdownFocused(newDropdownBool);
   };
 
   // on first load-in, fetch all Pokémon names for use in search bar suggestions
@@ -87,7 +121,7 @@ const Landing = () => {
   });
 
   // for our purposes, using only the id's 1025 are suitable for now
-  // as we assume default Pokémon (no special forms)
+  // as we assume default Pokémon (no special forms).
   const {
     data: pokemon,
     isLoading,
@@ -95,6 +129,24 @@ const Landing = () => {
   } = useQuery({
     queryKey: ["pokemon", id],
     queryFn: () => fetchPokemon(id),
+  });
+
+  // Only fetch the type sprites after data fetch, and make sure slot order is correct
+  const types = pokemon?.types.sort((a, b) => a.slot - b.slot) || [];
+  const type1_url = types[0]?.type.url;
+  const type2_url = types[1]?.type.url;
+
+  // dependent queries, will only fetch if urls for type1 and type2 exists
+  const { data: type1_details } = useQuery({
+    queryKey: ["type1_details", type1_url],
+    queryFn: () => fetchType(type1_url),
+    enabled: !!type1_url,
+  });
+
+  const { data: type2_details } = useQuery({
+    queryKey: ["type2_details", type2_url],
+    queryFn: () => fetchType(type2_url),
+    enabled: !!type2_url,
   });
 
   const cryUrl = pokemon?.cries?.latest || "";
@@ -113,18 +165,19 @@ const Landing = () => {
       >
         <div className="w-[95%] mx-auto mb-6">
           <SelectPanel></SelectPanel>
-          {isIE || isSafari ? (
+          {isIE || isSafari || isMobile ? (
             <div>
               <h1 className="text-[1.75rem] mx-auto w-[70%] text-center leading-9">
                 Use the Pokémon’s sprite, rather than its cry, and type your
                 guess on the dotted line.
               </h1>
-              <h2 className="text-[1.1rem] mx-auto w-[90%] text-center leading-9">
+              <h2 className="text-[1.1rem] mx-auto w-[95%] text-center leading-9">
                 It seems that you are using{" "}
-                <b className="text-[#fd6b70]">Safari or Internet Explorer</b>.
-                For the original experience with audio, try playing on another
-                browser as your current browser version may not support the .ogg
-                files provided by PokéAPI.
+                <b className="text-[#fd6b70]">Safari, Internet Explorer</b>, or
+                a <b className="text-[#fd6b70]">mobile device</b>. Your browser
+                version may not support playing the .ogg files provided by
+                PokéAPI. For the best experience with audio, play on a
+                compatible desktop browser.
               </h2>
               <ReplacementSprite
                 data={pokemon}
@@ -149,6 +202,14 @@ const Landing = () => {
           <AnswerPanel
             pokemonList={pokemonList}
             answer={answer}
+            dropdown={dropdown}
+            guess={guess}
+            isWon={isWon}
+            isDropdownFocused={isDropdownFocused}
+            handleDropdownFocused={handleDropdownFocused}
+            handleWon={handleWon}
+            handleGuess={handleGuess}
+            handleDropdown={handleDropdown}
             handleReset={handleReset}
             handleIncorrect={handleIncorrect}
             handleReverse={handleReverse}
@@ -156,7 +217,13 @@ const Landing = () => {
           ></AnswerPanel>
         </div>
         <div className="mx-auto text-center w-[80%]">
-          <HintPanel data={pokemon} count={incorrectCount}></HintPanel>
+          <HintPanel
+            data={pokemon}
+            count={incorrectCount}
+            type1={type1_details}
+            type2={type2_details}
+            handleReset={handleReset}
+          ></HintPanel>
           {/* <SettingsButton></SettingsButton>
           <PokeBall></PokeBall> */}
         </div>

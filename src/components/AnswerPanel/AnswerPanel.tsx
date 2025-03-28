@@ -7,14 +7,30 @@ import { useState } from "react";
 export const AnswerPanel = ({
   pokemonList,
   answer,
+  dropdown,
+  guess,
+  isWon,
+  isDropdownFocused,
+  handleDropdownFocused,
+  handleWon,
+  handleGuess,
   handleReset,
+  handleDropdown,
   handleIncorrect,
   handleReverse,
   handleIncreaseCount,
 }: {
   pokemonList: z.infer<typeof PokemonList> | undefined;
   answer: string;
+  dropdown: { name: string; url: string }[];
+  guess: string;
+  isWon: boolean;
+  isDropdownFocused: boolean;
+  handleDropdownFocused: (newDropdownBool: boolean) => void;
+  handleWon: () => void;
+  handleGuess: (newGuess: string) => void;
   handleReset: () => void;
+  handleDropdown: (newDropdown: { name: string; url: string }[]) => void;
   handleIncorrect: () => void;
   handleReverse: () => void;
   handleIncreaseCount: () => void;
@@ -22,11 +38,7 @@ export const AnswerPanel = ({
   // NOTE: browser + img tag will automatically cache sprite images,
   // not to mention HTTP 2/3 supports multiplexing. Therefore, the performance
   // hit from constant image calls is likely to be negligible.
-  const [dropdown, setDropdown] = useState<{ name: string; url: string }[]>([]);
-  const [guess, setGuess] = useState("");
-  const [isWon, setWon] = useState(false);
   const [isInputFocused, setInputFocused] = useState(false);
-  const [isDropdownFocused, setDropdownFocused] = useState(false);
 
   const handleBlur = () => {
     // if the user unfocuses input, they may be trying to select a dropdown option
@@ -39,14 +51,13 @@ export const AnswerPanel = ({
   const checkCorrectGuess = (userGuess: string) => {
     // userGuess variable required since async
     if (userGuess.toLowerCase() === answer.toLowerCase()) {
-      setWon(true);
+      handleWon();
     } else {
-      setDropdown([]);
       handleIncorrect();
       setTimeout(() => {
         handleReverse();
         handleIncreaseCount();
-        setGuess("");
+        handleGuess("");
       }, 700);
     }
   };
@@ -57,23 +68,18 @@ export const AnswerPanel = ({
     event.preventDefault();
     // capitals only for look purposes
     if (guess.length > 0 && guess !== "") {
-      setGuess(capitaliseFirst(guess));
+      handleGuess(capitaliseFirst(guess));
     }
     checkCorrectGuess(guess);
   };
 
   // component rerenders if 'answer' is changed, but state variables still persists
-  const newGame = () => {
-    setWon(false);
-    setGuess("");
-    setDropdown([]);
-    handleReset();
-  };
+  // so need to lift state up
 
   const generateOptions = (e: any) => {
     // add variable just in case, since setState is async
     let input = e.target.value;
-    setGuess(input);
+    handleGuess(input);
     // keyboard input will now match, but we want comparisons done on lowercase
     input = input.toLowerCase();
 
@@ -91,17 +97,17 @@ export const AnswerPanel = ({
       // compared to select, ul/li, datalist, etc.
       // TODO: in case links ever change, doing another API call to find front_default urls are ideal
       // however, based on current PokeAPI assumptions, url is always the same
-      setDropdown(firstMatches);
+      handleDropdown(firstMatches);
     } else {
-      setDropdown([]);
+      handleDropdown([]);
     }
   };
 
   const handleSelect = (choice: string) => {
-    setGuess(capitaliseFirst(choice));
+    handleGuess(capitaliseFirst(choice));
     checkCorrectGuess(choice);
-    setDropdown([]);
-    setDropdownFocused(false);
+    handleDropdown([]);
+    handleDropdownFocused(false);
   };
 
   function capitaliseFirst(name: string) {
@@ -118,7 +124,7 @@ export const AnswerPanel = ({
           <p className="mb-1">CONGRATULATIONS!</p>
           <button
             className="flex ml-[0.5rem] cursor-pointer animate-pulse"
-            onClick={newGame}
+            onClick={handleReset}
           >
             <img
               className="w-5 h-5 mt-2 mr-1"
@@ -147,8 +153,8 @@ export const AnswerPanel = ({
             <div
               id="dropdown-container"
               className="absolute bg-white flex flex-col bg-red cursor-pointer border-dotted border-x-3 border-b-3 border-b-stone-500"
-              onMouseOver={() => setDropdownFocused(true)}
-              onMouseLeave={() => setDropdownFocused(false)}
+              onMouseOver={() => handleDropdownFocused(true)}
+              onMouseLeave={() => handleDropdownFocused(false)}
             >
               {dropdown.map((option) => {
                 const match = option.url.match(/(\d+)\/$/);
