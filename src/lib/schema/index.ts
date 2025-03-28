@@ -24,9 +24,11 @@ const PokemonType = z.object({
 // also note: these stats are based upon the latest game/data
 // e.g. "type" would be the current type, and does not consider cases
 // such as the retconned fairy type.
+// NOTE: Height is in decimetres, while weight is in hectograms.
 export const Pokemon = z.object({
   id: z.number(),
   name: z.string(),
+  height: z.number(),
   weight: z.number(),
   abilities: z.array(PokemonAbility),
   sprites: z.object({ front_default: z.string().url() }),

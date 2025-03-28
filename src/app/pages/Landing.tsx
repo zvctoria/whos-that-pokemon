@@ -4,11 +4,13 @@ import { HintPanel } from "../../components/HintPanel";
 // import { PokeBall } from "../../components/PokeBall";
 import { ReplayButton } from "../../components/ReplayButton/ReplayButton.tsx";
 import { AnswerPanel } from "../../components/AnswerPanel/AnswerPanel.tsx";
+import { ReplacementSprite } from "../../components/ReplacementSprite.tsx";
 import logo from "../../assets/logo.png";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { z } from "zod";
 import { Pokemon, PokemonList } from "../../lib/schema/index";
+import { isIE, isSafari } from "react-device-detect";
 
 const TOTAL_POKEMON = 1025;
 
@@ -56,9 +58,13 @@ const Landing = () => {
   // Assumes there are 1025 unique Pokémon. True as of now.
   const [id, setId] = useState(getRandomId);
   const [isIncorrect, setIncorrect] = useState(false);
+  const [incorrectCount, setIncorrectCount] = useState(0);
 
   const handleReset = () => {
+    // reset pokemon
     setId(getRandomId);
+    // reset incorrect count, to reset hints
+    setIncorrectCount(0);
   };
 
   const handleIncorrect = () => {
@@ -67,6 +73,10 @@ const Landing = () => {
 
   const handleReverse = () => {
     setIncorrect(false);
+  };
+
+  const handleCount = () => {
+    setIncorrectCount(incorrectCount + 1);
   };
 
   // on first load-in, fetch all Pokémon names for use in search bar suggestions
@@ -103,29 +113,50 @@ const Landing = () => {
       >
         <div className="w-[95%] mx-auto mb-6">
           <SelectPanel></SelectPanel>
-          <h1 className="text-[1.75rem] mx-auto w-[70%] text-center leading-9">
-            Listen to the Pokémon's cry and type your guess on the dotted line.
-          </h1>
-          <h2 className="hidden">
-            Please click at least one generation! (Toggle)
-          </h2>
-          <ReplayButton
-            isLoading={isLoading}
-            url={cryUrl}
-            error={error}
-            isIncorrect={isIncorrect}
-          ></ReplayButton>
+          {isIE || isSafari ? (
+            <div>
+              <h1 className="text-[1.75rem] mx-auto w-[70%] text-center leading-9">
+                Use the Pokémon’s sprite, rather than its cry, and type your
+                guess on the dotted line.
+              </h1>
+              <h2 className="text-[1.1rem] mx-auto w-[90%] text-center leading-9">
+                It seems that you are using{" "}
+                <b className="text-[#fd6b70]">Safari or Internet Explorer</b>.
+                For the original experience with audio, try playing on another
+                browser as your current browser version may not support the .ogg
+                files provided by PokéAPI.
+              </h2>
+              <ReplacementSprite
+                data={pokemon}
+                isLoading={isLoading}
+                isIncorrect={isIncorrect}
+              ></ReplacementSprite>
+            </div>
+          ) : (
+            <div>
+              <h1 className="text-[1.75rem] mx-auto w-[70%] text-center leading-9">
+                Listen to the Pokémon's cry and type your guess on the dotted
+                line.
+              </h1>
+              <ReplayButton
+                isLoading={isLoading}
+                url={cryUrl}
+                error={error}
+                isIncorrect={isIncorrect}
+              ></ReplayButton>
+            </div>
+          )}
           <AnswerPanel
             pokemonList={pokemonList}
             answer={answer}
             handleReset={handleReset}
             handleIncorrect={handleIncorrect}
             handleReverse={handleReverse}
+            handleIncreaseCount={handleCount}
           ></AnswerPanel>
         </div>
         <div className="mx-auto text-center w-[80%]">
-          <HintPanel data={pokemon}></HintPanel>
-          <button className="hidden">(when done) Try Again</button>
+          <HintPanel data={pokemon} count={incorrectCount}></HintPanel>
           {/* <SettingsButton></SettingsButton>
           <PokeBall></PokeBall> */}
         </div>

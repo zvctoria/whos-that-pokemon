@@ -40,7 +40,7 @@ export const ReplayButton = ({
               />
             </span>
           ) : isIncorrect ? (
-            <span id="pixel-x"></span>
+            <span className="pixel-x"></span>
           ) : isPlaying ? (
             <span id="pixel-pause"></span>
           ) : (
