@@ -115,21 +115,21 @@ export const HintPanel = ({
               className="w-[10rem] h-auto brightness-0"
             />
           </div>
+        </>
+      )}
+      {spriteUnlocked && (
+        <>
+          <hr className="my-6 w-40 mx-auto h-1 opacity-20" />
           <p className="text-[1.5rem]">
             No more hints available! Still confused?
           </p>
+          <div className="flex justify-center gap-x-10 text-[1.5rem] mt-6">
+            <button className="cursor-pointer  w-[20%]">Reveal Answer</button>
+            <button className="cursor-pointer w-[20%]">
+              Try a New Pokémon
+            </button>
+          </div>
         </>
-      )}
-      {spriteUnlocked && !isCompatible && (
-        <p className="text-[1.5rem]">
-          No more hints available! Still confused?
-        </p>
-      )}
-      {spriteUnlocked && (
-        <div className="flex justify-center gap-x-10 text-[1.5rem] mt-6">
-          <button className="cursor-pointer  w-[20%]">Reveal Answer</button>
-          <button className="cursor-pointer w-[20%]">Try a New Pokémon</button>
-        </div>
       )}
       <div ref={hintRef} className="mt-3 text-[#fafafa]">
         Victoria Zhao
