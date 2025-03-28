@@ -68,7 +68,16 @@ const Landing = () => {
   const [isIncorrect, setIncorrect] = useState(false);
   const [incorrectCount, setIncorrectCount] = useState(0);
 
+  const [dropdown, setDropdown] = useState<{ name: string; url: string }[]>([]);
+  const [guess, setGuess] = useState("");
+  const [isWon, setWon] = useState(false);
+  const [isDropdownFocused, setDropdownFocused] = useState(false);
+
   const handleReset = () => {
+    setWon(false);
+    setGuess("");
+    setDropdown([]);
+    setDropdownFocused(false);
     // reset pokemon
     setId(getRandomId);
     // reset incorrect count, to reset hints
@@ -84,7 +93,24 @@ const Landing = () => {
   };
 
   const handleCount = () => {
-    setIncorrectCount(incorrectCount + 1);
+    // safer since async
+    setIncorrectCount((prevIncorrectCount) => prevIncorrectCount + 1);
+  };
+
+  const handleWon = () => {
+    setWon(true);
+  };
+
+  const handleGuess = (newGuess: string) => {
+    setGuess(newGuess);
+  };
+
+  const handleDropdown = (newDropdown: { name: string; url: string }[]) => {
+    setDropdown(newDropdown);
+  };
+
+  const handleDropdownFocused = (newDropdownBool: boolean) => {
+    setDropdownFocused(newDropdownBool);
   };
 
   // on first load-in, fetch all Pokémon names for use in search bar suggestions
@@ -176,6 +202,14 @@ const Landing = () => {
           <AnswerPanel
             pokemonList={pokemonList}
             answer={answer}
+            dropdown={dropdown}
+            guess={guess}
+            isWon={isWon}
+            isDropdownFocused={isDropdownFocused}
+            handleDropdownFocused={handleDropdownFocused}
+            handleWon={handleWon}
+            handleGuess={handleGuess}
+            handleDropdown={handleDropdown}
             handleReset={handleReset}
             handleIncorrect={handleIncorrect}
             handleReverse={handleReverse}
@@ -188,6 +222,7 @@ const Landing = () => {
             count={incorrectCount}
             type1={type1_details}
             type2={type2_details}
+            handleReset={handleReset}
           ></HintPanel>
           {/* <SettingsButton></SettingsButton>
           <PokeBall></PokeBall> */}

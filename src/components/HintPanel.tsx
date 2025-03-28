@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { Pokemon, PokemonTypeSprite } from "../lib/schema/index";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { isIE, isSafari } from "react-device-detect";
 
 export const HintPanel = ({
@@ -8,11 +8,13 @@ export const HintPanel = ({
   count,
   type1,
   type2,
+  handleReset,
 }: {
   data: z.infer<typeof Pokemon> | undefined;
   count: number;
   type1: z.infer<typeof PokemonTypeSprite> | undefined;
   type2: z.infer<typeof PokemonTypeSprite> | undefined;
+  handleReset: () => void;
 }) => {
   let weightUnlocked = false;
   let typeUnlocked = false;
@@ -20,6 +22,7 @@ export const HintPanel = ({
   let abilitiesUnlocked = false;
 
   const hintRef = useRef<HTMLDivElement | null>(null);
+  const [isAnswerRevealed, setIsAnswerRevealed] = useState(false);
 
   const scrollToHint = () => {
     hintRef.current?.scrollIntoView({
@@ -64,7 +67,6 @@ export const HintPanel = ({
           Need a hint?
         </h1>
       )}
-
       <h2 className="text-[1.3rem] leading-6.5 mb-4">
         Each incorrect guess will reveal helpful hints, like its type,
         abilities, and sprite!
@@ -104,7 +106,10 @@ export const HintPanel = ({
           metres tall.
         </h3>
       )}
-      {abilitiesUnlocked && <div>ability hint</div>}
+      {abilitiesUnlocked &&
+        data?.abilities.map((ability) => {
+          return <div>{ability.slot}</div>;
+        })}
       {spriteUnlocked && isCompatible && (
         <>
           <div className="flex items-center justify-center mb-3">
@@ -123,16 +128,16 @@ export const HintPanel = ({
           <p className="text-[1.5rem]">
             No more hints available! Still confused?
           </p>
-          <div className="flex justify-center gap-x-10 text-[1.5rem] mt-6">
-            <button className="cursor-pointer  w-[20%]">Reveal Answer</button>
-            <button className="cursor-pointer w-[20%]">
+          <div className="flex justify-center gap-x-6 text-[1.5rem] mt-6">
+            <button className="cursor-pointer w-[15%]">Reveal Answer</button>
+            <button className="cursor-pointer w-[20%]" onClick={handleReset}>
               Try a New Pokémon
             </button>
           </div>
         </>
       )}
       <div ref={hintRef} className="mt-3 text-[#fafafa]">
-        Victoria Zhao
+        Who's That Pokémon Quiz?
       </div>
     </>
   );
