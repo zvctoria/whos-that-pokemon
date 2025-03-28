@@ -63,6 +63,8 @@ export const HintPanel = ({
 
   const isCompatible = !isIE && !isSafari;
 
+  const sprite = data?.sprites.front_default;
+
   return (
     <>
       {count > 0 ? (
@@ -128,7 +130,7 @@ export const HintPanel = ({
           <div className="flex items-center justify-center mb-3">
             <h3 className="text-[1.75rem] font-bold">Sprite</h3>
             <img
-              src={data?.sprites.front_default}
+              src={sprite}
               alt="sprite"
               className="w-[10rem] h-auto brightness-0"
             />
@@ -159,7 +161,7 @@ export const HintPanel = ({
             <div className="text-[2rem] font-bold border-[#fd6b70] border-solid border-4 w-[14rem] mx-auto">
               <h3 className="">It's</h3>
               <img
-                src={data?.sprites.front_default}
+                src={sprite}
                 alt="sprite"
                 className="w-[10rem] h-auto mx-auto"
               />
