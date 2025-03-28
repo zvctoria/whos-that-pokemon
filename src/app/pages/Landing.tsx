@@ -72,12 +72,14 @@ const Landing = () => {
   const [guess, setGuess] = useState("");
   const [isWon, setWon] = useState(false);
   const [isDropdownFocused, setDropdownFocused] = useState(false);
+  const [isAnswerRevealed, setIsAnswerRevealed] = useState(false);
 
   const handleReset = () => {
     setWon(false);
     setGuess("");
     setDropdown([]);
     setDropdownFocused(false);
+    setIsAnswerRevealed(false);
     // reset pokemon
     setId(getRandomId);
     // reset incorrect count, to reset hints
@@ -111,6 +113,10 @@ const Landing = () => {
 
   const handleDropdownFocused = (newDropdownBool: boolean) => {
     setDropdownFocused(newDropdownBool);
+  };
+
+  const handleAnswerRevealed = () => {
+    setIsAnswerRevealed(true);
   };
 
   // on first load-in, fetch all Pokémon names for use in search bar suggestions
@@ -222,7 +228,9 @@ const Landing = () => {
             count={incorrectCount}
             type1={type1_details}
             type2={type2_details}
+            isAnswerRevealed={isAnswerRevealed}
             handleReset={handleReset}
+            handleAnswerRevealed={handleAnswerRevealed}
           ></HintPanel>
           {/* <SettingsButton></SettingsButton>
           <PokeBall></PokeBall> */}
