@@ -54,12 +54,13 @@ export const HintPanel = ({
   }
 
   if (count >= 3) {
-    abilitiesUnlocked = true;
-  }
-
-  if (count >= 4) {
+    // abilitiesUnlocked = true;
     spriteUnlocked = true;
   }
+
+  // if (count >= 4) {
+  //   spriteUnlocked = true;
+  // }
 
   const isCompatible = !isIE && !isSafari;
 
@@ -121,10 +122,6 @@ export const HintPanel = ({
           metres tall.
         </h3>
       )}
-      {abilitiesUnlocked &&
-        data?.abilities.map((ability) => {
-          return <div>{ability.slot}</div>;
-        })}
       {spriteUnlocked && isCompatible && (
         <>
           <div className="flex items-center justify-center mb-3">
