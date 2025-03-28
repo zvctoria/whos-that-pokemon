@@ -67,7 +67,19 @@ export const HintPanel = ({
       </h2>
       <hr className="my-6 w-40 mx-auto h-1 opacity-20" />
       {typeUnlocked ? (
-        <div>type hint</div>
+        <div className="flex items-center justify-center mb-1">
+          <h3 className="text-[1.75rem] font-bold pr-2rem">Type</h3>
+          <img
+            src={data?.sprites.front_default}
+            alt="sprite"
+            className="w-[10rem] h-auto"
+          />
+          <img
+            src={data?.sprites.front_default}
+            alt="sprite"
+            className="w-[10rem] h-auto"
+          />
+        </div>
       ) : (
         <p className="text-[1.5rem]">
           Oh no! You haven't unlocked any hints yet.

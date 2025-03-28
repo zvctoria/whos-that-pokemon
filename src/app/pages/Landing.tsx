@@ -10,7 +10,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { z } from "zod";
 import { Pokemon, PokemonList } from "../../lib/schema/index";
-import { isIE, isSafari } from "react-device-detect";
+import { isIE, isSafari, isMobile } from "react-device-detect";
 
 const TOTAL_POKEMON = 1025;
 
@@ -113,18 +113,19 @@ const Landing = () => {
       >
         <div className="w-[95%] mx-auto mb-6">
           <SelectPanel></SelectPanel>
-          {isIE || isSafari ? (
+          {isIE || isSafari || isMobile ? (
             <div>
               <h1 className="text-[1.75rem] mx-auto w-[70%] text-center leading-9">
                 Use the Pokémon’s sprite, rather than its cry, and type your
                 guess on the dotted line.
               </h1>
-              <h2 className="text-[1.1rem] mx-auto w-[90%] text-center leading-9">
+              <h2 className="text-[1.1rem] mx-auto w-[95%] text-center leading-9">
                 It seems that you are using{" "}
-                <b className="text-[#fd6b70]">Safari or Internet Explorer</b>.
-                For the original experience with audio, try playing on another
-                browser as your current browser version may not support the .ogg
-                files provided by PokéAPI.
+                <b className="text-[#fd6b70]">Safari, Internet Explorer</b>, or
+                a <b className="text-[#fd6b70]">mobile device</b>. Your browser
+                version may not support playing the .ogg files provided by
+                PokéAPI. For the best experience with audio, play on a
+                compatible desktop browser.
               </h2>
               <ReplacementSprite
                 data={pokemon}
