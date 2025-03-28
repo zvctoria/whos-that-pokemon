@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { Pokemon, PokemonTypeSprite } from "../lib/schema/index";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { isIE, isSafari } from "react-device-detect";
 
 export const HintPanel = ({
@@ -8,13 +8,17 @@ export const HintPanel = ({
   count,
   type1,
   type2,
+  isAnswerRevealed,
   handleReset,
+  handleAnswerRevealed,
 }: {
   data: z.infer<typeof Pokemon> | undefined;
   count: number;
   type1: z.infer<typeof PokemonTypeSprite> | undefined;
   type2: z.infer<typeof PokemonTypeSprite> | undefined;
+  isAnswerRevealed: boolean;
   handleReset: () => void;
+  handleAnswerRevealed: () => void;
 }) => {
   let weightUnlocked = false;
   let typeUnlocked = false;
@@ -22,18 +26,8 @@ export const HintPanel = ({
   // let abilitiesUnlocked = false;
 
   const hintRef = useRef<HTMLDivElement | null>(null);
-  const [isAnswerRevealed, setIsAnswerRevealed] = useState(false);
-
-  const handleAnswerRevealed = () => {
-    setIsAnswerRevealed(true);
-
-    setTimeout(() => {
-      scrollToHint();
-    }, 100);
-  };
 
   const handleNewGame = () => {
-    setIsAnswerRevealed(false);
     handleReset();
   };
 
@@ -143,7 +137,12 @@ export const HintPanel = ({
           <div className="flex justify-center gap-x-14 xl:gap-x-18 text-[1.5rem] mt-6 mb-12">
             <button
               className="cursor-pointer px-2 py-4 max-w-[20%] py-4 bg-[#fd6b70] rounded-xl"
-              onClick={handleAnswerRevealed}
+              onClick={() => {
+                handleAnswerRevealed();
+                setTimeout(() => {
+                  scrollToHint();
+                }, 100);
+              }}
             >
               Reveal Answer
             </button>
