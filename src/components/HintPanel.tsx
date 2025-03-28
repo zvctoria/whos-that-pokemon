@@ -128,10 +128,10 @@ export const HintPanel = ({
           <p className="text-[1.5rem]">
             No more hints available! Still confused?
           </p>
-          <div className="flex justify-center gap-x-6 text-[1.5rem] mt-6">
+          <div className="flex justify-center gap-x-14 xl:gap-x-8 text-[1.5rem] mt-6">
             <button className="cursor-pointer w-[15%]">Reveal Answer</button>
             <button className="cursor-pointer w-[20%]" onClick={handleReset}>
-              Try a New Pokémon
+              Try New Pokémon
             </button>
           </div>
         </>
