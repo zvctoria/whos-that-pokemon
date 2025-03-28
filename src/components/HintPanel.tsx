@@ -24,6 +24,19 @@ export const HintPanel = ({
   const hintRef = useRef<HTMLDivElement | null>(null);
   const [isAnswerRevealed, setIsAnswerRevealed] = useState(false);
 
+  const handleAnswerRevealed = () => {
+    setIsAnswerRevealed(true);
+
+    setTimeout(() => {
+      scrollToHint();
+    }, 100);
+  };
+
+  const handleNewGame = () => {
+    setIsAnswerRevealed(false);
+    handleReset();
+  };
+
   const scrollToHint = () => {
     hintRef.current?.scrollIntoView({
       behavior: "smooth",
@@ -128,12 +141,31 @@ export const HintPanel = ({
           <p className="text-[1.5rem]">
             No more hints available! Still confused?
           </p>
-          <div className="flex justify-center gap-x-14 xl:gap-x-8 text-[1.5rem] mt-6">
-            <button className="cursor-pointer w-[15%]">Reveal Answer</button>
-            <button className="cursor-pointer w-[20%]" onClick={handleReset}>
+          <div className="flex justify-center gap-x-14 xl:gap-x-18 text-[1.5rem] mt-6 mb-12">
+            <button
+              className="cursor-pointer px-2 py-4 max-w-[20%] py-4 bg-[#fd6b70] rounded-xl"
+              onClick={handleAnswerRevealed}
+            >
+              Reveal Answer
+            </button>
+            <button
+              className="cursor-pointer px-2 py-4 max-w-[20%] py-4 bg-[#fd6b70] rounded-xl"
+              onClick={handleNewGame}
+            >
               Try New Pokémon
             </button>
           </div>
+          {isAnswerRevealed && (
+            <div className="text-[2rem] font-bold border-[#fd6b70] border-solid border-4 w-[14rem] mx-auto">
+              <h3 className="">It's</h3>
+              <img
+                src={data?.sprites.front_default}
+                alt="sprite"
+                className="w-[10rem] h-auto mx-auto"
+              />
+              <h3 className="first-letter:uppercase">{data?.name}!</h3>
+            </div>
+          )}
         </>
       )}
       <div ref={hintRef} className="mt-3 text-[#fafafa]">
