@@ -157,7 +157,6 @@ const Landing = () => {
         </div>
         <div className="mx-auto text-center w-[80%]">
           <HintPanel data={pokemon} count={incorrectCount}></HintPanel>
-          <button className="hidden">(when done) Try Again</button>
           {/* <SettingsButton></SettingsButton>
           <PokeBall></PokeBall> */}
         </div>

@@ -10,8 +10,10 @@ export const HintPanel = ({
   data: z.infer<typeof Pokemon> | undefined;
   count: number;
 }) => {
-  let spriteUnlocked = false;
+  let weightUnlocked = false;
   let typeUnlocked = false;
+  let spriteUnlocked = false;
+  let abilitiesUnlocked = false;
 
   const hintRef = useRef<HTMLDivElement | null>(null);
 
@@ -24,11 +26,19 @@ export const HintPanel = ({
   };
 
   if (count >= 1) {
-    spriteUnlocked = true;
+    typeUnlocked = true;
   }
 
   if (count >= 2) {
-    typeUnlocked = true;
+    weightUnlocked = true;
+  }
+
+  if (count >= 3) {
+    abilitiesUnlocked = true;
+  }
+
+  if (count >= 4) {
+    spriteUnlocked = true;
   }
 
   const isCompatible = !isIE && !isSafari;
@@ -56,43 +66,38 @@ export const HintPanel = ({
         abilities, and sprite!
       </h2>
       <hr className="my-6 w-40 mx-auto h-1 opacity-20" />
-      {spriteUnlocked && isCompatible ? (
-        <div className="flex items-center justify-center">
-          <h3 className="text-[1.75rem] font-bold">Sprite</h3>
-          <img
-            src={data?.sprites.front_default}
-            alt="sprite"
-            className="w-[10rem] h-auto brightness-0"
-          />
-        </div>
-      ) : !isCompatible ? (
-        <p className="text-[1.5rem]">
-          No hints implemented yet for your browser!
-        </p>
+      {typeUnlocked ? (
+        <div>type hint</div>
       ) : (
         <p className="text-[1.5rem]">
           Oh no! You haven't unlocked any hints yet.
         </p>
       )}
-      {typeUnlocked && isCompatible && (
-        <div className="text-[1.5rem]">Other hints not implemented yet!</div>
+      {weightUnlocked && (
+        <>
+          <h3 className="text-[1.75rem]">
+            This Pokémon weighs <b>{data?.weight ? data.weight / 10 : "N/A"}</b>{" "}
+            kilograms and is <b>{data?.height ? data.height / 10 : "N/A"}</b>{" "}
+            metres tall.
+          </h3>
+        </>
       )}
-      <div className="hidden">
-        This Pokémon weighs <p className="font-bold">number kg</p>
-      </div>
-      <div className="hidden">
-        <p>Not Helpful? MASTER BALL</p>
-        <button>Hint: see what's inside (comparison)</button>
-      </div>
-      <div className="hidden">First appeared in: </div>
-      <div className="hidden">
-        <h2>Can potentially have the following abilities:</h2>
-        <div>
-          <h3>Ability 1 (dynamic)</h3>
-          <p>Description</p>
-        </div>
-      </div>
-      <div className="hidden">Sprite {data?.name}</div>
+      {abilitiesUnlocked && <div>ability hint</div>}
+      {spriteUnlocked && isCompatible ? (
+        <>
+          <div className="flex items-center justify-center mb-1">
+            <h3 className="text-[1.75rem] font-bold">Sprite</h3>
+            <img
+              src={data?.sprites.front_default}
+              alt="sprite"
+              className="w-[10rem] h-auto brightness-0"
+            />
+          </div>
+          <p className="text-[1.5rem]">No more hints available!</p>
+        </>
+      ) : !isCompatible ? (
+        <p className="text-[1.5rem]">No more hints available!</p>
+      ) : null}
       <div ref={hintRef} className="mt-3 text-[#fafafa]">
         Victoria Zhao
       </div>
