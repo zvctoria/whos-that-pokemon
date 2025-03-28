@@ -9,7 +9,11 @@ import logo from "../../assets/logo.png";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { z } from "zod";
-import { Pokemon, PokemonList } from "../../lib/schema/index";
+import {
+  Pokemon,
+  PokemonList,
+  PokemonTypeSprite,
+} from "../../lib/schema/index";
 import { isIE, isSafari, isMobile } from "react-device-detect";
 
 const TOTAL_POKEMON = 1025;
@@ -29,6 +33,10 @@ async function fetchAndValidate<T>(
   console.log("Validated data:", parsedData);
 
   return parsedData;
+}
+
+async function fetchType(typeUrl: string) {
+  return fetchAndValidate(typeUrl, PokemonTypeSprite);
 }
 
 async function fetchPokemon(id: number) {
@@ -87,7 +95,7 @@ const Landing = () => {
   });
 
   // for our purposes, using only the id's 1025 are suitable for now
-  // as we assume default Pokémon (no special forms)
+  // as we assume default Pokémon (no special forms).
   const {
     data: pokemon,
     isLoading,
@@ -95,6 +103,24 @@ const Landing = () => {
   } = useQuery({
     queryKey: ["pokemon", id],
     queryFn: () => fetchPokemon(id),
+  });
+
+  // Only fetch the type sprites after data fetch, and make sure slot order is correct
+  const types = pokemon?.types.sort((a, b) => a.slot - b.slot) || [];
+  const type1_url = types[0]?.type.url;
+  const type2_url = types[1]?.type.url;
+
+  // dependent queries, will only fetch if urls for type1 and type2 exists
+  const { data: type1_details } = useQuery({
+    queryKey: ["type1_details", type1_url],
+    queryFn: () => fetchType(type1_url),
+    enabled: !!type1_url,
+  });
+
+  const { data: type2_details } = useQuery({
+    queryKey: ["type2_details", type2_url],
+    queryFn: () => fetchType(type2_url),
+    enabled: !!type2_url,
   });
 
   const cryUrl = pokemon?.cries?.latest || "";
@@ -157,7 +183,12 @@ const Landing = () => {
           ></AnswerPanel>
         </div>
         <div className="mx-auto text-center w-[80%]">
-          <HintPanel data={pokemon} count={incorrectCount}></HintPanel>
+          <HintPanel
+            data={pokemon}
+            count={incorrectCount}
+            type1={type1_details}
+            type2={type2_details}
+          ></HintPanel>
           {/* <SettingsButton></SettingsButton>
           <PokeBall></PokeBall> */}
         </div>

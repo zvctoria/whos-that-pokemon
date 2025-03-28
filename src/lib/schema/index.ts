@@ -54,3 +54,13 @@ export const PokemonList = z.object({
     })
   ),
 });
+
+export const PokemonTypeSprite = z.object({
+  sprites: z.object({
+    "generation-vi": z.object({
+      "omega-ruby-alpha-sapphire": z.object({
+        name_icon: z.string().url(),
+      }),
+    }),
+  }),
+});
