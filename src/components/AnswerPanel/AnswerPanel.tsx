@@ -40,10 +40,26 @@ export const AnswerPanel = ({
   // hit from constant image calls is likely to be negligible.
   const [isInputFocused, setInputFocused] = useState(false);
 
+  // onTouchStart will ALWAYS trigger before onMouseOver, so can safely use this variable
+  let usingTouch = false;
+
+  const handleTouch = () => {
+    usingTouch = true;
+  };
+
   const handleBlur = () => {
     // if the user unfocuses input, they may be trying to select a dropdown option
+    console.log(isDropdownFocused);
     if (!isDropdownFocused) {
-      setInputFocused(false);
+      // on mobile, onMouseOver instantly triggers upon touch/click, which doesn't give enough time for
+      // isDropdownFocused to update + rerender. So we must set a timeout.
+      if (usingTouch) {
+        setTimeout(() => {
+          setInputFocused(false);
+        }, 100);
+      } else {
+        setInputFocused(false);
+      }
     }
   };
 
@@ -118,8 +134,6 @@ export const AnswerPanel = ({
   // handle tabbing, arrow accessibility functions
   const handleKeys = (e: any) => {
     if (dropdown.length > 0 && (e.key === "Tab" || e.key === "ArrowDown")) {
-      console.log("here!");
-      e.preventDefault();
       const firstButton = document.querySelector(
         "#dropdown-container button:first-child"
       ) as HTMLElement;
@@ -168,8 +182,11 @@ export const AnswerPanel = ({
             <div
               id="dropdown-container"
               className="absolute bg-white flex flex-col bg-red border-dotted border-x-3 border-b-3 border-b-stone-500"
-              onMouseOver={() => handleDropdownFocused(true)}
+              onMouseOver={() => {
+                handleDropdownFocused(true);
+              }}
               onMouseLeave={() => handleDropdownFocused(false)}
+              onTouchStart={handleTouch}
             >
               {dropdown.map((option, index) => {
                 const match = option.url.match(/(\d+)\/$/);
