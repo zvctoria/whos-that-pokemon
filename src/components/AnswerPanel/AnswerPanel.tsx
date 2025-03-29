@@ -39,7 +39,7 @@ export const AnswerPanel = ({
   // https://stackoverflow.com/questions/32553158/detect-click-outside-react-component/44378829#44378829
   const handleBlur = (e: any) => {
     // if we are blurring the form somehow, but not clicking the dropdown
-    // then remove the dropdown
+    // then remove the dropdown. NOTE: event.relatedTarget contains an element that gained focus.
     if (!e.currentTarget.contains(e.relatedTarget)) {
       setInputFocused(false);
     }
