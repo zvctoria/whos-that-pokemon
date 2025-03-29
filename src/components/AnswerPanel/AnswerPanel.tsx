@@ -180,7 +180,7 @@ export const AnswerPanel = ({
                   <div key={index}>
                     <button
                       onClick={() => handleSelect(option.name)}
-                      className="flex hover:bg-stone-200 focus:bg-stone-200 pr-[5rem] py-1 cursor-pointer"
+                      className="flex hover:bg-stone-200 focus:bg-stone-200 pr-[5rem] w-[100%] py-1 cursor-pointer"
                     >
                       <img
                         src={
@@ -191,7 +191,7 @@ export const AnswerPanel = ({
                         alt={`sprite for ${option.name}`}
                         className="text-[0.5rem] w-[50px] h-[50px] mx-[1rem]"
                       />
-                      <span className="text-left my-auto text-[1rem] first-letter:uppercase ">
+                      <span className="text-left my-auto text-[1rem] first-letter:uppercase">
                         {option.name}
                       </span>
                     </button>
