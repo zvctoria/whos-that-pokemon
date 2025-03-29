@@ -54,6 +54,9 @@ export const AnswerPanel = ({
       handleWon();
     } else {
       handleIncorrect();
+      handleDropdown([]);
+      handleDropdownFocused(false);
+
       setTimeout(() => {
         handleReverse();
         handleIncreaseCount();
@@ -106,13 +109,24 @@ export const AnswerPanel = ({
   const handleSelect = (choice: string) => {
     handleGuess(capitaliseFirst(choice));
     checkCorrectGuess(choice);
-    handleDropdown([]);
-    handleDropdownFocused(false);
   };
 
   function capitaliseFirst(name: string) {
     return name[0].toUpperCase() + name.slice(1);
   }
+
+  // handle tabbing, arrow accessibility functions
+  const handleKeys = (e: any) => {
+    if (dropdown.length > 0 && (e.key === "Tab" || e.key === "ArrowDown")) {
+      console.log("here!");
+      e.preventDefault();
+      const firstButton = document.querySelector(
+        "#dropdown-container button:first-child"
+      ) as HTMLElement;
+
+      firstButton.focus();
+    }
+  };
 
   return (
     <div
@@ -147,37 +161,39 @@ export const AnswerPanel = ({
               onChange={generateOptions}
               onFocus={() => setInputFocused(true)}
               onBlur={handleBlur}
+              onKeyDown={handleKeys}
             />
           </form>
           {dropdown.length > 0 && isInputFocused && (
             <div
               id="dropdown-container"
-              className="absolute bg-white flex flex-col bg-red cursor-pointer border-dotted border-x-3 border-b-3 border-b-stone-500"
+              className="absolute bg-white flex flex-col bg-red border-dotted border-x-3 border-b-3 border-b-stone-500"
               onMouseOver={() => handleDropdownFocused(true)}
               onMouseLeave={() => handleDropdownFocused(false)}
             >
-              {dropdown.map((option) => {
+              {dropdown.map((option, index) => {
                 const match = option.url.match(/(\d+)\/$/);
                 // capture group is index [1]
                 const optionId = match ? match[1] : "";
 
                 return (
-                  <div
-                    key={option.name}
-                    className="flex hover:bg-stone-200 pr-[5rem]"
-                    onClick={() => handleSelect(option.name)}
-                  >
-                    <img
-                      src={
-                        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" +
-                        optionId +
-                        ".png"
-                      }
-                      alt={`sprite for ${option.name}`}
-                      className="text-[0.5rem] w-[50px] h-[50px] mx-[1rem]"
-                    />
-                    <button className="text-left text-[1rem] first-letter:uppercase">
-                      {option.name}
+                  <div key={index}>
+                    <button
+                      onClick={() => handleSelect(option.name)}
+                      className="flex hover:bg-stone-200 focus:bg-stone-200 pr-[5rem] py-1 cursor-pointer"
+                    >
+                      <img
+                        src={
+                          "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" +
+                          optionId +
+                          ".png"
+                        }
+                        alt={`sprite for ${option.name}`}
+                        className="text-[0.5rem] w-[50px] h-[50px] mx-[1rem]"
+                      />
+                      <span className="text-left my-auto text-[1rem] first-letter:uppercase ">
+                        {option.name}
+                      </span>
                     </button>
                   </div>
                 );
