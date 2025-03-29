@@ -104,8 +104,9 @@ export const AnswerPanel = ({
   };
 
   // This function also triggers upon 'enter', due to button type,
-  // for ease and convenience.
+  // for ease and convenience. Need separate function, since 'guess' not yet updated
   const handleSelect = (choice: string) => {
+    console.log("selected" + choice);
     handleGuess(capitaliseFirst(choice));
     checkCorrectGuess(choice);
   };
@@ -161,6 +162,7 @@ export const AnswerPanel = ({
                     <div key={index}>
                       <button
                         type="submit"
+                        tabIndex={0}
                         onClick={() => handleSelect(option.name)}
                         className="flex hover:bg-stone-200 focus:bg-stone-200 pr-[5rem] w-[100%] py-1 cursor-pointer outline-hidden"
                       >
