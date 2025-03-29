@@ -10,8 +10,6 @@ export const AnswerPanel = ({
   dropdown,
   guess,
   isWon,
-  isDropdownFocused,
-  handleDropdownFocused,
   handleWon,
   handleGuess,
   handleReset,
@@ -25,8 +23,6 @@ export const AnswerPanel = ({
   dropdown: { name: string; url: string }[];
   guess: string;
   isWon: boolean;
-  isDropdownFocused: boolean;
-  handleDropdownFocused: (newDropdownBool: boolean) => void;
   handleWon: () => void;
   handleGuess: (newGuess: string) => void;
   handleReset: () => void;
@@ -40,26 +36,12 @@ export const AnswerPanel = ({
   // hit from constant image calls is likely to be negligible.
   const [isInputFocused, setInputFocused] = useState(false);
 
-  // onTouchStart will ALWAYS trigger before onMouseOver, so can safely use this variable
-  let usingTouch = false;
-
-  const handleTouch = () => {
-    usingTouch = true;
-  };
-
-  const handleBlur = () => {
-    // if the user unfocuses input, they may be trying to select a dropdown option
-    console.log(isDropdownFocused);
-    if (!isDropdownFocused) {
-      // on mobile, onMouseOver instantly triggers upon touch/click, which doesn't give enough time for
-      // isDropdownFocused to update + rerender. So we must set a timeout.
-      if (usingTouch) {
-        setTimeout(() => {
-          setInputFocused(false);
-        }, 100);
-      } else {
-        setInputFocused(false);
-      }
+  // https://stackoverflow.com/questions/32553158/detect-click-outside-react-component/44378829#44378829
+  const handleBlur = (e: any) => {
+    // if we are blurring the form somehow, but not clicking the dropdown
+    // then remove the dropdown
+    if (!e.currentTarget.contains(e.relatedTarget)) {
+      setInputFocused(false);
     }
   };
 
@@ -71,7 +53,6 @@ export const AnswerPanel = ({
     } else {
       handleIncorrect();
       handleDropdown([]);
-      handleDropdownFocused(false);
 
       setTimeout(() => {
         handleReverse();
@@ -122,6 +103,8 @@ export const AnswerPanel = ({
     }
   };
 
+  // This function also triggers upon 'enter', due to button type,
+  // for ease and convenience.
   const handleSelect = (choice: string) => {
     handleGuess(capitaliseFirst(choice));
     checkCorrectGuess(choice);
@@ -130,17 +113,6 @@ export const AnswerPanel = ({
   function capitaliseFirst(name: string) {
     return name[0].toUpperCase() + name.slice(1);
   }
-
-  // handle tabbing, arrow accessibility functions
-  const handleKeys = (e: any) => {
-    if (dropdown.length > 0 && (e.key === "Tab" || e.key === "ArrowDown")) {
-      const firstButton = document.querySelector(
-        "#dropdown-container button:first-child"
-      ) as HTMLElement;
-
-      firstButton.focus();
-    }
-  };
 
   return (
     <div
@@ -165,7 +137,7 @@ export const AnswerPanel = ({
       ) : (
         <div id="not-won">
           <p className="mb-0.75">A wild</p>
-          <form onSubmit={handleSubmit} autoComplete="off">
+          <form onSubmit={handleSubmit} autoComplete="off" onBlur={handleBlur}>
             <input
               id="answer-form"
               type="text"
@@ -174,49 +146,43 @@ export const AnswerPanel = ({
               value={guess}
               onChange={generateOptions}
               onFocus={() => setInputFocused(true)}
-              onBlur={handleBlur}
-              onKeyDown={handleKeys}
             />
-          </form>
-          {dropdown.length > 0 && isInputFocused && (
-            <div
-              id="dropdown-container"
-              className="absolute bg-white flex flex-col bg-red border-dotted border-x-3 border-b-3 border-b-stone-500"
-              onMouseOver={() => {
-                handleDropdownFocused(true);
-              }}
-              onMouseLeave={() => handleDropdownFocused(false)}
-              onTouchStart={handleTouch}
-            >
-              {dropdown.map((option, index) => {
-                const match = option.url.match(/(\d+)\/$/);
-                // capture group is index [1]
-                const optionId = match ? match[1] : "";
+            {dropdown.length > 0 && isInputFocused && (
+              <div
+                id="dropdown-container"
+                className="absolute bg-white flex flex-col bg-red border-dotted border-x-3 border-b-3 border-b-stone-500"
+              >
+                {dropdown.map((option, index) => {
+                  const match = option.url.match(/(\d+)\/$/);
+                  // capture group is index [1]
+                  const optionId = match ? match[1] : "";
 
-                return (
-                  <div key={index}>
-                    <button
-                      onClick={() => handleSelect(option.name)}
-                      className="flex hover:bg-stone-200 focus:bg-stone-200 pr-[5rem] w-[100%] py-1 cursor-pointer"
-                    >
-                      <img
-                        src={
-                          "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" +
-                          optionId +
-                          ".png"
-                        }
-                        alt={`sprite for ${option.name}`}
-                        className="text-[0.5rem] w-[50px] h-[50px] mx-[1rem]"
-                      />
-                      <span className="text-left my-auto text-[1rem] first-letter:uppercase">
-                        {option.name}
-                      </span>
-                    </button>
-                  </div>
-                );
-              })}
-            </div>
-          )}
+                  return (
+                    <div key={index}>
+                      <button
+                        type="submit"
+                        onClick={() => handleSelect(option.name)}
+                        className="flex hover:bg-stone-200 focus:bg-stone-200 pr-[5rem] w-[100%] py-1 cursor-pointer outline-hidden"
+                      >
+                        <img
+                          src={
+                            "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" +
+                            optionId +
+                            ".png"
+                          }
+                          alt={`sprite for ${option.name}`}
+                          className="text-[0.5rem] w-[50px] h-[50px] mx-[1rem]"
+                        />
+                        <span className="text-left my-auto text-[1rem] first-letter:uppercase">
+                          {option.name}
+                        </span>
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </form>
           <div id="last-line-container" className="flex justify-between">
             <p className="mt-1.5">appeared!</p>
             <img
