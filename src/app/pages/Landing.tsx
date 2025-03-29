@@ -71,14 +71,12 @@ const Landing = () => {
   const [dropdown, setDropdown] = useState<{ name: string; url: string }[]>([]);
   const [guess, setGuess] = useState("");
   const [isWon, setWon] = useState(false);
-  const [isDropdownFocused, setDropdownFocused] = useState(false);
   const [isAnswerRevealed, setIsAnswerRevealed] = useState(false);
 
   const handleReset = () => {
     setWon(false);
     setGuess("");
     setDropdown([]);
-    setDropdownFocused(false);
     setIsAnswerRevealed(false);
     // reset pokemon
     setId(getRandomId);
@@ -109,10 +107,6 @@ const Landing = () => {
 
   const handleDropdown = (newDropdown: { name: string; url: string }[]) => {
     setDropdown(newDropdown);
-  };
-
-  const handleDropdownFocused = (newDropdownBool: boolean) => {
-    setDropdownFocused(newDropdownBool);
   };
 
   const handleAnswerRevealed = () => {
@@ -211,8 +205,6 @@ const Landing = () => {
             dropdown={dropdown}
             guess={guess}
             isWon={isWon}
-            isDropdownFocused={isDropdownFocused}
-            handleDropdownFocused={handleDropdownFocused}
             handleWon={handleWon}
             handleGuess={handleGuess}
             handleDropdown={handleDropdown}

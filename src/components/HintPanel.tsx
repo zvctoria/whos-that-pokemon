@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { Pokemon, PokemonTypeSprite } from "../lib/schema/index";
 import { useRef } from "react";
-import { isIE, isSafari } from "react-device-detect";
+import { isIE, isSafari, isMobile } from "react-device-detect";
 
 export const HintPanel = ({
   data,
@@ -56,7 +56,7 @@ export const HintPanel = ({
   //   spriteUnlocked = true;
   // }
 
-  const isCompatible = !isIE && !isSafari;
+  const isCompatible = !isIE && !isSafari && !isMobile;
 
   const sprite = data?.sprites.front_default;
 

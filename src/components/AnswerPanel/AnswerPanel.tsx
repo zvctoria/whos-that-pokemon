@@ -10,8 +10,6 @@ export const AnswerPanel = ({
   dropdown,
   guess,
   isWon,
-  isDropdownFocused,
-  handleDropdownFocused,
   handleWon,
   handleGuess,
   handleReset,
@@ -25,8 +23,6 @@ export const AnswerPanel = ({
   dropdown: { name: string; url: string }[];
   guess: string;
   isWon: boolean;
-  isDropdownFocused: boolean;
-  handleDropdownFocused: (newDropdownBool: boolean) => void;
   handleWon: () => void;
   handleGuess: (newGuess: string) => void;
   handleReset: () => void;
@@ -40,9 +36,11 @@ export const AnswerPanel = ({
   // hit from constant image calls is likely to be negligible.
   const [isInputFocused, setInputFocused] = useState(false);
 
-  const handleBlur = () => {
-    // if the user unfocuses input, they may be trying to select a dropdown option
-    if (!isDropdownFocused) {
+  // https://stackoverflow.com/questions/32553158/detect-click-outside-react-component/44378829#44378829
+  const handleBlur = (e: any) => {
+    // if we are blurring the form somehow, but not clicking the dropdown
+    // then remove the dropdown. NOTE: event.relatedTarget contains an element that gained focus.
+    if (!e.currentTarget.contains(e.relatedTarget)) {
       setInputFocused(false);
     }
   };
@@ -54,6 +52,8 @@ export const AnswerPanel = ({
       handleWon();
     } else {
       handleIncorrect();
+      handleDropdown([]);
+
       setTimeout(() => {
         handleReverse();
         handleIncreaseCount();
@@ -103,11 +103,12 @@ export const AnswerPanel = ({
     }
   };
 
+  // This function also triggers upon 'enter', due to button type,
+  // for ease and convenience. Need separate function, since 'guess' not yet updated
   const handleSelect = (choice: string) => {
+    console.log("selected" + choice);
     handleGuess(capitaliseFirst(choice));
     checkCorrectGuess(choice);
-    handleDropdown([]);
-    handleDropdownFocused(false);
   };
 
   function capitaliseFirst(name: string) {
@@ -137,7 +138,7 @@ export const AnswerPanel = ({
       ) : (
         <div id="not-won">
           <p className="mb-0.75">A wild</p>
-          <form onSubmit={handleSubmit} autoComplete="off">
+          <form onSubmit={handleSubmit} autoComplete="off" onBlur={handleBlur}>
             <input
               id="answer-form"
               type="text"
@@ -146,44 +147,44 @@ export const AnswerPanel = ({
               value={guess}
               onChange={generateOptions}
               onFocus={() => setInputFocused(true)}
-              onBlur={handleBlur}
             />
-          </form>
-          {dropdown.length > 0 && isInputFocused && (
-            <div
-              id="dropdown-container"
-              className="absolute bg-white flex flex-col bg-red cursor-pointer border-dotted border-x-3 border-b-3 border-b-stone-500"
-              onMouseOver={() => handleDropdownFocused(true)}
-              onMouseLeave={() => handleDropdownFocused(false)}
-            >
-              {dropdown.map((option) => {
-                const match = option.url.match(/(\d+)\/$/);
-                // capture group is index [1]
-                const optionId = match ? match[1] : "";
+            {dropdown.length > 0 && isInputFocused && (
+              <div
+                id="dropdown-container"
+                className="absolute bg-white flex flex-col bg-red border-dotted border-x-3 border-b-3 border-b-stone-500"
+              >
+                {dropdown.map((option, index) => {
+                  const match = option.url.match(/(\d+)\/$/);
+                  // capture group is index [1]
+                  const optionId = match ? match[1] : "";
 
-                return (
-                  <div
-                    key={option.name}
-                    className="flex hover:bg-stone-200 pr-[5rem]"
-                    onClick={() => handleSelect(option.name)}
-                  >
-                    <img
-                      src={
-                        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" +
-                        optionId +
-                        ".png"
-                      }
-                      alt={`sprite for ${option.name}`}
-                      className="text-[0.5rem] w-[50px] h-[50px] mx-[1rem]"
-                    />
-                    <button className="text-left text-[1rem] first-letter:uppercase">
-                      {option.name}
-                    </button>
-                  </div>
-                );
-              })}
-            </div>
-          )}
+                  return (
+                    <div key={index}>
+                      <button
+                        type="submit"
+                        tabIndex={0}
+                        onClick={() => handleSelect(option.name)}
+                        className="flex hover:bg-stone-200 focus:bg-stone-200 pr-[5rem] w-[100%] py-1 cursor-pointer outline-hidden"
+                      >
+                        <img
+                          src={
+                            "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" +
+                            optionId +
+                            ".png"
+                          }
+                          alt={`sprite for ${option.name}`}
+                          className="text-[0.5rem] w-[50px] h-[50px] mx-[1rem]"
+                        />
+                        <span className="text-left my-auto text-[1rem] first-letter:uppercase">
+                          {option.name}
+                        </span>
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </form>
           <div id="last-line-container" className="flex justify-between">
             <p className="mt-1.5">appeared!</p>
             <img
