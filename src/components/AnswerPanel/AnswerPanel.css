@@ -7,3 +7,7 @@ input::placeholder {
   box-shadow: 0 2px 0 2px black, inset 0 2px 0 2px black, 0 0 0 2px black,
     inset 0 0 0 2px black;
 }
+
+#next {
+  image-orientation: none;
+}

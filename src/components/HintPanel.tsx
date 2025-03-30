@@ -154,7 +154,7 @@ export const HintPanel = ({
             </button>
           </div>
           {isAnswerRevealed && (
-            <div className="text-[2rem] font-bold border-[#fd6b70] border-solid border-4 w-[14rem] mx-auto">
+            <div className="text-[1.15rem] font-[pokemon-gb] font-bold w-[14rem] mx-auto">
               <h3 className="">It's</h3>
               <img
                 src={sprite}

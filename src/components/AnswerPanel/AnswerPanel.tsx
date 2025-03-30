@@ -3,6 +3,7 @@ import arrow from "../../assets/next.png";
 import { z } from "zod";
 import { PokemonList } from "../../lib/schema/index";
 import { useState } from "react";
+import { isSafari } from "react-device-detect";
 
 export const AnswerPanel = ({
   pokemonList,
@@ -129,10 +130,11 @@ export const AnswerPanel = ({
           >
             <img
               className="w-5 h-5 mt-2 mr-1"
+              id="next"
               src={arrow}
               alt="Next arrow for dialog box"
             />
-            <span className="leading-11">NEW GAME</span>
+            <span className="leading-10">NEW GAME</span>
           </button>
         </div>
       ) : (
@@ -187,11 +189,19 @@ export const AnswerPanel = ({
           </form>
           <div id="last-line-container" className="flex justify-between">
             <p className="mt-1.5">appeared!</p>
-            <img
-              className="w-5 h-5 rotate-90 mt-2 mr-1"
-              src={arrow}
-              alt="Next arrow for dialog box"
-            />
+            {isSafari ? (
+              <img
+                className="w-5 h-5 mt-2 mr-1"
+                src={arrow}
+                alt="Next arrow for dialog box"
+              />
+            ) : (
+              <img
+                className="w-5 h-5 rotate-90 mt-2 mr-1"
+                src={arrow}
+                alt="Next arrow for dialog box"
+              />
+            )}
           </div>
         </div>
       )}

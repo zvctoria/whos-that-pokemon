@@ -33,5 +33,5 @@ body {
 
 @font-face {
   font-family: "pokemon-gb";
-  src: url("./assets/PokemonGB.woff2"), url("./assets/PokemonGb-RAeo.ttf");
+  src: url("./assets/FixedPokemonGB.woff2"), url("./assets/PokemonGb-RAeo.ttf");
 }
