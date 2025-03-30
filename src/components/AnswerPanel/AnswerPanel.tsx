@@ -134,7 +134,7 @@ export const AnswerPanel = ({
               src={arrow}
               alt="Next arrow for dialog box"
             />
-            <span className="leading-11">NEW GAME</span>
+            <span className="leading-10">NEW GAME</span>
           </button>
         </div>
       ) : (
